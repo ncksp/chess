@@ -3,14 +3,14 @@ package utilities;
 import java.util.Scanner;
 
 public class Utilities {
-	public Scanner scan = new Scanner(System.in); 
-	
+	public static Scanner scan = new Scanner(System.in);
+
 	public void cls() {
-		for(int i = 0 ; i < 30; i++)
+		for (int i = 0; i < 30; i++)
 			System.out.println();
 	}
-	
-	public int menu(int choose) {
+
+	public int chooseMenu(int choose) {
 		choose = 0;
 		cls();
 		System.out.println("1. Algebraic");
