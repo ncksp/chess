@@ -3,24 +3,33 @@ package classic.board;
 import utilities.Utilities;
 
 public class Board {
+
+	public static void invalidFormat() {
+		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
+		Utilities.scan.nextLine();
+	}
+
 	public static int setPlayerMove(int move, int type) {
 		if (move % 2 == 1)
-			whiteMove(type);
+			move("white move: ",type);
 		else
-			blackMove(type);
+			move("black move: ",type);
 
 		return move == 2 ? 1 : move + 1;
 	}
 
-	
-	public static void whiteMove(int type) {
-		System.out.println("white move:");
-		String notation = Utilities.scan.nextLine();
+	public static void move(String text, int type) {
+		Movement movement = Movement.getInstance();
+		String notation;
+		do{
+			System.out.print(text);
 		
-		BoardUtils.convertCoordinate(notation,type);
-	}
+			notation = Utilities.scan.nextLine();
 
-	public static void blackMove(int type) {
-		System.out.println("black move:");
+			movement = BoardUtils.convertCoordinate(notation,type);
+			if(movement == null){
+				invalidFormat();
+			}
+		}while(movement == null);
 	}
 }

@@ -7,7 +7,7 @@ import utilities.Utilities;
 public class Main {
 
 	Utilities util = new Utilities();
-	int win = -1;
+	public static int win = -1;
 	int playerMove = 1;
 
 	public Main() {
@@ -28,11 +28,11 @@ public class Main {
 	}
 
 	private void play(int type) {
+		BoardUtils.createBoard();
 		do {
 			util.cls();
 			BoardUtils.drawBoard();
 			playerMove = Board.setPlayerMove(playerMove, type);
-			Utilities.scan.nextLine();
 		} while (win == -1);
 
 	}
