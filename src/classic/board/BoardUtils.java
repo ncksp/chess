@@ -10,7 +10,7 @@ import classic.piece.Queen;
 import classic.piece.Rook;
 
 public class BoardUtils {
-	static Tile[][] board = new Tile[8][8];
+	public static Tile[][] board = new Tile[8][8];
 	final static int FILE = 8;
 	final static int RANK = 8;
 	final static String matcherNotation = "[A-H][1-8]";

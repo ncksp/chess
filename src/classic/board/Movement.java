@@ -1,9 +1,13 @@
 package classic.board;
 
+import classic.piece.Piece;
+import classic.player.Player;
+
 public class Movement {
+	private Player player;
 	private Tile from;
 	private Tile to;
-
+	private Piece pieceKilled;
 	private static Movement movement = new Movement();
 
 	private Movement() {
@@ -14,10 +18,12 @@ public class Movement {
 		return movement;
 	}
 
-	public Movement(Tile from, Tile to) {
-		super();
-		this.from = from;
-		this.to = to;
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	public Tile getFrom() {
@@ -36,9 +42,25 @@ public class Movement {
 		this.to = to;
 	}
 
-	public boolean canMove(Tile from, Tile to) {
+	public Piece getPieceKilled() {
+		return pieceKilled;
+	}
 
-		return this.getFrom().getPiece().canMove(from, to);
+	public void setPieceKilled(Piece pieceKilled) {
+		this.pieceKilled = pieceKilled;
+	}
+	
+	public Piece getStartPiece(){
+		return this.getFrom().getPiece();
+	}
+	
+	public Piece getEndPiece(){
+		return this.getTo().getPiece();
+	}
+
+	public boolean canMove() {
+
+		return this.getFrom().getPiece().canMove(this.getFrom(), this.getTo());
 	}
 
 	public boolean fromIsWhite() {

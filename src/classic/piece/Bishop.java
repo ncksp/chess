@@ -1,5 +1,7 @@
 package classic.piece;
 
+import java.util.Vector;
+
 import classic.board.Tile;
 
 public class Bishop extends Piece {
@@ -24,7 +26,22 @@ public class Bishop extends Piece {
 	@Override
 	public boolean canMove(Tile from, Tile to) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+
+	@Override
+	public Tile setMovement(int rank, int file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Tile> getMoves(Tile from) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
+
+
+// the other three states are available in this chapter’s sample code

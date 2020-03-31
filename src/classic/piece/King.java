@@ -1,5 +1,7 @@
 package classic.piece;
 
+import java.util.Vector;
+
 import classic.board.Tile;
 
 public class King extends Piece {
@@ -21,7 +23,7 @@ public class King extends Piece {
 	@Override
 	public boolean canMove(Tile from, Tile to) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -34,6 +36,18 @@ public class King extends Piece {
 	public String pieceCode() {
 		// TODO Auto-generated method stub
 		return "K";
+	}
+
+	@Override
+	public Tile setMovement(int rank, int file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<Tile> getMoves(Tile from) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

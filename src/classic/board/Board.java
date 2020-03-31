@@ -1,7 +1,8 @@
 package classic.board;
 
-import java.util.List;
+import java.util.Vector;
 
+import classic.piece.Piece;
 import classic.player.BlackPlayer;
 import classic.player.Player;
 import classic.player.WhitePlayer;
@@ -11,7 +12,7 @@ public class Board {
 
 	public static WhitePlayer white = new WhitePlayer();
 	public static BlackPlayer black = new BlackPlayer();
-	public static List<Move> movesPlayer;
+	public static Vector<Movement> movesPlayer = new Vector<>();
 	public static void invalidFormat() {
 		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
 		Utilities.scan.nextLine();
@@ -43,33 +44,34 @@ public class Board {
 				System.out.println("Invalid Move");
 				loop = true;
 			}
-//			System.out.println(movement.getTo().getFile());
 		}while(movement ==null || loop);
 		
 	}
 	
 	public static boolean makeMove(Movement movement, Player player){
+		Piece startPiece = movement.getStartPiece();
 		
-		int fromRank = movement.fromRank();
-		int fromFile = movement.fromFile();
-		
-		if(BoardUtils.board[fromRank][fromFile] == null)
+		if(startPiece == null)
 			return false;
+		
 		if(movement.fromIsWhite() != player.isWhiteSide())
 			return false;
 		
-//		System.out.println(movement.getTo().getFile());
-		
-		int toRank = movement.toRank();
-		int toFile = movement.toFile();
-		
-//		System.out.println(fromFile);
-		if(! movement.canMove(movement.getFrom(), movement.getTo()))
+		if(!movement.canMove())
 			return false;
 		
-//		
-		BoardUtils.board[toRank][toFile].setPiece(BoardUtils.board[fromRank][fromFile].getPiece());
-		BoardUtils.board[fromRank][fromFile] = new Tile(null, fromRank, fromFile);
+		movement.setPlayer(player);
+		
+		Piece destPiece = movement.getEndPiece();
+		if(destPiece != null){
+			destPiece.setKilled(true);
+			movement.setPieceKilled(destPiece);
+		}
+		movesPlayer.add(movement);
+		
+		movement.getTo().setPiece(startPiece);
+		movement.getFrom().setPiece(null);
+		
 		return true;
 	}
 }
