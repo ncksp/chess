@@ -52,6 +52,7 @@ public class Board {
 		
 		int fromRank = movement.fromRank();
 		int fromFile = movement.fromFile();
+		
 		if(BoardUtils.board[fromRank][fromFile] == null)
 			return false;
 		if(movement.fromIsWhite() != player.isWhiteSide())
@@ -63,7 +64,8 @@ public class Board {
 		int toFile = movement.toFile();
 		
 //		System.out.println(fromFile);
-		
+		if(! movement.canMove(movement.getFrom(), movement.getTo()))
+			return false;
 		
 //		
 		BoardUtils.board[toRank][toFile].setPiece(BoardUtils.board[fromRank][fromFile].getPiece());

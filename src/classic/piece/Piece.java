@@ -1,6 +1,5 @@
 package classic.piece;
 
-import classic.board.Board;
 import classic.board.Tile;
 
 public abstract class Piece {
@@ -34,5 +33,5 @@ public abstract class Piece {
 
 	public abstract String pieceCode();
 
-	public abstract boolean canMove(Board board, Tile from, Tile to);
+	public abstract boolean canMove(Tile from, Tile to);
 }

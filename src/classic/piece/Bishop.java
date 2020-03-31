@@ -1,6 +1,5 @@
 package classic.piece;
 
-import classic.board.Board;
 import classic.board.Tile;
 
 public class Bishop extends Piece {
@@ -8,12 +7,6 @@ public class Bishop extends Piece {
 	public Bishop(boolean white) {
 		super(white);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public boolean canMove(Board board, Tile from, Tile to) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -26,6 +19,12 @@ public class Bishop extends Piece {
 	public String pieceCode() {
 		// TODO Auto-generated method stub
 		return "B";
+	}
+
+	@Override
+	public boolean canMove(Tile from, Tile to) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

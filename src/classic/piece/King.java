@@ -1,6 +1,5 @@
 package classic.piece;
 
-import classic.board.Board;
 import classic.board.Tile;
 
 public class King extends Piece {
@@ -20,7 +19,7 @@ public class King extends Piece {
 	}
 
 	@Override
-	public boolean canMove(Board board, Tile from, Tile to) {
+	public boolean canMove(Tile from, Tile to) {
 		// TODO Auto-generated method stub
 		return false;
 	}
