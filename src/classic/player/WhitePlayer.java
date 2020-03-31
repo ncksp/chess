@@ -1,5 +1,7 @@
 package classic.player;
 
-public class WhitePlayer {
-
+public class WhitePlayer extends Player {
+	public WhitePlayer() {
+		this.whiteSide = true; 
+	}
 }

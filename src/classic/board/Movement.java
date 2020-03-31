@@ -30,4 +30,28 @@ public class Movement {
 	public void setTo(Tile to) {
 		this.to = to;
 	}
+	
+	public boolean fromIsWhite(){
+		return this.getFrom().getPiece().isWhite();
+	}
+	
+	public boolean toIsWhite(){
+		return this.getTo().getPiece().isWhite();
+	}
+	
+	public int fromRank(){
+		return this.getFrom().getRank();
+	}
+	
+	public int toRank(){
+		return this.getTo().getRank();
+	}
+	
+	public int fromFile(){
+		return this.getFrom().getFile();
+	}
+	
+	public int toFile(){
+		return this.getTo().getFile();
+	}
 }

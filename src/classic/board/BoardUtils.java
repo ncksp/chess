@@ -39,6 +39,12 @@ public class BoardUtils {
 			board[1][i] = new Tile(new Pawn(false), 1, i);
 			board[6][i] = new Tile(new Pawn(true), 6, i);
 		}
+		
+		for (int i = 2; i < 6; i++) { 
+            for (int j = 0; j < 8; j++) { 
+            	board[i][j] = new Tile(null, i, j);
+            } 
+        } 
 	}
 
 	public static String getCode(int rank, int file) {
@@ -47,10 +53,10 @@ public class BoardUtils {
 		if (rank % 2 == file % 2)
 			str = "+";
 
-		if (board[rank][file] != null)
+		if (board[rank][file].getPiece() != null)
 			str = board[rank][file].getCode();
 
-		if (board[rank][file] != null && board[rank][file].isWhite())
+		if (board[rank][file].getPiece() != null && board[rank][file].isWhite())
 			str = board[rank][file].getCode().toLowerCase();
 
 		return str;
@@ -86,9 +92,9 @@ public class BoardUtils {
 
 		int toFile = getIndexTile(to.charAt(0), 'A');
 		int toRank = RANK - (getIndexTile(to.charAt(1), '0'));
-
 		movement.setFrom(board[fromRank][fromFile]);
 		movement.setTo(board[toRank][toFile]);
+		
 		return movement;
 	}
 
