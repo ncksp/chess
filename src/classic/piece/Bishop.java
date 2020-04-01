@@ -2,9 +2,12 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.BoardUtils;
 import classic.board.Tile;
 
 public class Bishop extends Piece {
+
+	Vector<Tile> moves = new Vector<>();
 
 	public Bishop(boolean white) {
 		super(white);
@@ -24,24 +27,64 @@ public class Bishop extends Piece {
 	}
 
 	@Override
-	public boolean canMove(Tile from, Tile to) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public Tile setMovement(int rank, int file) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Vector<Tile> getMoves(Tile from) {
 		// TODO Auto-generated method stub
-		return null;
+		Tile[][] board = BoardUtils.board;
+		boolean white = board[from.getRank()][from.getFile()].isWhite();
+		moves = new Vector<>();
+		// NE
+		for (int i = from.getRank() - 1, j = from.getFile() + 1; i >= 0 && j < 8; i--, j++) {
+			try {
+				if (board[i][j].isWhite() == white) {
+					break;
+				}
+			} catch (Exception e) {
+			}
+//			System.out.println("NE");
+//			System.out.println(j + "-" + i);
+			moves.add(setMovement(i, j));
+		}
+
+		// SE
+		for (int i = from.getRank() + 1, j = from.getFile() + 1; i < 8 && j < 8; i++, j++) {
+			try {
+				if (board[i][j].isWhite() == white) {
+					break;
+				}
+			} catch (Exception e) {
+			}
+//			System.out.println("SE");
+//			System.out.println(j + "-" + i);
+			moves.add(setMovement(i, j));
+		}
+
+		// SW
+		for (int i = from.getRank() + 1, j = from.getFile() - 1; i < 8 && j >= 0; i++, j--) {
+			try {
+				if (board[i][j].isWhite() == white) {
+					break;
+				}
+			} catch (Exception e) {
+			}
+//			System.out.println("SW");
+//			System.out.println(j + "-" + i);
+			moves.add(setMovement(i, j));
+		}
+
+		// NW
+		for (int i = from.getRank() - 1, j = from.getFile() - 1; i >= 0 && j >= 0; i--, j--) {
+			try {
+				if (board[i][j].isWhite() == white) {
+					break;
+				}
+			} catch (Exception e) {
+			}
+//			System.out.println("NW");
+//			System.out.println(j + "-" + i);
+			moves.add(setMovement(i, j));
+		}
+
+		return moves;
 	}
 
 }
-
-
-// the other three states are available in this chapter’s sample code

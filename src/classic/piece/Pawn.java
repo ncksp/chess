@@ -2,43 +2,75 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.BoardUtils;
 import classic.board.Tile;
 
 public class Pawn extends Piece {
 
+	Vector<Tile> moves = new Vector<>();
+
 	public Pawn(boolean white) {
 		super(white);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public boolean canMove(Tile from, Tile to) {
-		// TODO Auto-generated method stub
-		return true;
 	}
 
 	@Override
 	public String pieceName() {
-		// TODO Auto-generated method stub
 		return "Pawn";
 	}
 
 	@Override
 	public String pieceCode() {
-		// TODO Auto-generated method stub
 		return "P";
 	}
 
 	@Override
-	public Tile setMovement(int rank, int file) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Vector<Tile> getMoves(Tile from) {
-		// TODO Auto-generated method stub
-		return null;
+		Tile[][] board = BoardUtils.board;
+		boolean white = board[from.getRank()][from.getFile()].isWhite();
+		moves = new Vector<>();
+		int sub = 0;
+		sub = white ? -1 : 1;
+
+		int currentPosition = from.getRank();
+		int max = white ? 4 : 3;
+
+		// System.out.println(max);
+		// System.out.println(max - currentPosition);
+		// System.out.println(Math.abs(max - currentPosition));
+
+		boolean canMoveDouble = Math.abs(max - currentPosition) == 2 ? true : false;
+
+		// System.out.println(canMoveDouble);
+		if (valid(from.getRank() + sub, from.getFile()) && getPiece(from.getRank() + sub, from.getFile()) == null)
+			moves.add(setMovement(from.getRank() + sub, from.getFile()));
+
+		if (valid(from.getRank() + sub, from.getFile()) && white
+				&& getPiece(from.getRank() - 1, from.getFile() - 1) != null
+				&& !getPiece(from.getRank() - 1, from.getFile() - 1).isWhite())
+			moves.add(setMovement(from.getRank() - 1, from.getFile() - 1));
+
+		if (valid(from.getRank() + sub, from.getFile()) && white
+				&& getPiece(from.getRank() - 1, from.getFile() + 1) != null
+				&& !getPiece(from.getRank() - 1, from.getFile() + 1).isWhite())
+			moves.add(setMovement(from.getRank() - 1, from.getFile() + 1));
+
+		if (valid(from.getRank() + sub, from.getFile()) && !white
+				&& getPiece(from.getRank() + 1, from.getFile() - 1) != null
+				&& getPiece(from.getRank() + 1, from.getFile() - 1).isWhite())
+			moves.add(setMovement(from.getRank() + 1, from.getFile() - 1));
+
+		if (valid(from.getRank() + sub, from.getFile()) && !white
+				&& getPiece(from.getRank() + 1, from.getFile() + 1) != null
+				&& getPiece(from.getRank() + 1, from.getFile() + 1).isWhite())
+			moves.add(setMovement(from.getRank() + 1, from.getFile() + 1));
+
+		if (!canMoveDouble)
+			return moves;
+
+		if (valid(from.getRank() + sub, from.getFile()) && getPiece(from.getRank() + sub + sub, from.getFile()) == null)
+			moves.add(setMovement(from.getRank() + sub + sub, from.getFile()));
+
+		return moves;
 	}
 
 }

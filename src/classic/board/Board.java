@@ -9,10 +9,10 @@ import classic.player.WhitePlayer;
 import utilities.Utilities;
 
 public class Board {
-
 	public static WhitePlayer white = new WhitePlayer();
 	public static BlackPlayer black = new BlackPlayer();
 	public static Vector<Movement> movesPlayer = new Vector<>();
+	public static Vector<Vector<Tile>> notSafePosition = new Vector<>();
 	public static void invalidFormat() {
 		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
 		Utilities.scan.nextLine();
@@ -72,6 +72,11 @@ public class Board {
 		movement.getTo().setPiece(startPiece);
 		movement.getFrom().setPiece(null);
 		
+		for (Vector<Tile> vector : notSafePosition) {
+			for (Tile tile : vector) {
+				System.out.println(tile.getFile() + "--" + tile.getRank());
+			}
+		}
 		return true;
 	}
 }

@@ -5,11 +5,13 @@ import java.util.Vector;
 import classic.board.Tile;
 
 public class King extends Piece {
+
+	Vector<Tile> moves = new Vector<>();
+
 	private boolean castling = false;
 
 	public King(boolean white) {
 		super(white);
-		// TODO Auto-generated constructor stub
 	}
 
 	public boolean isCastling() {
@@ -21,33 +23,66 @@ public class King extends Piece {
 	}
 
 	@Override
-	public boolean canMove(Tile from, Tile to) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
 	public String pieceName() {
-		// TODO Auto-generated method stub
 		return "King";
 	}
 
 	@Override
 	public String pieceCode() {
-		// TODO Auto-generated method stub
 		return "K";
 	}
 
 	@Override
-	public Tile setMovement(int rank, int file) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Vector<Tile> getMoves(Tile from) {
-		// TODO Auto-generated method stub
-		return null;
+		// N
+		if (valid(from.getRank() + 1, from.getFile()) && getPiece(from.getRank() + 1, from.getFile()) == null
+				|| (getPiece(from.getRank() + 1, from.getFile()) != null
+						&& getPiece(from.getRank() + 1, from.getFile()).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank() + 1, from.getFile()));
+
+		// NE
+		if (valid(from.getRank() + 1, from.getFile() + 1) && getPiece(from.getRank() + 1, from.getFile() + 1) == null
+				|| (getPiece(from.getRank() + 1, from.getFile() + 1) != null
+						&& getPiece(from.getRank() + 1, from.getFile() + 1).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank() + 1, from.getFile() + 1));
+
+		// E
+		if (valid(from.getRank(), from.getFile() + 1) && getPiece(from.getRank(), from.getFile() + 1) == null
+				|| (getPiece(from.getRank(), from.getFile() + 1) != null
+						&& getPiece(from.getRank(), from.getFile() + 1).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank(), from.getFile() + 1));
+
+		// SE
+		if (valid(from.getRank() - 1, from.getFile() + 1) && getPiece(from.getRank() - 1, from.getFile() + 1) == null
+				|| (getPiece(from.getRank() - 1, from.getFile() + 1) != null
+						&& getPiece(from.getRank() - 1, from.getFile() + 1).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank() - 1, from.getFile() + 1));
+
+		// S
+		if (valid(from.getRank() - 1, from.getFile()) && getPiece(from.getRank() - 1, from.getFile()) == null
+				|| (getPiece(from.getRank() - 1, from.getFile()) != null
+						&& getPiece(from.getRank() - 1, from.getFile()).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank() - 1, from.getFile()));
+
+		// SW
+		if (valid(from.getRank() - 1, from.getFile() - 1) && getPiece(from.getRank() - 1, from.getFile() - 1) == null
+				|| (getPiece(from.getRank() - 1, from.getFile() - 1) != null
+						&& getPiece(from.getRank() - 1, from.getFile() - 1).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank() - 1, from.getFile() - 1));
+
+		// W
+		if (valid(from.getRank(), from.getFile() - 1) && getPiece(from.getRank(), from.getFile() - 1) == null
+				|| (getPiece(from.getRank(), from.getFile() - 1) != null
+						&& getPiece(from.getRank(), from.getFile() - 1).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank(), from.getFile() - 1));
+
+		// NW
+		if (valid(from.getRank() + 1, from.getFile() - 1) && getPiece(from.getRank() + 1, from.getFile() - 1) == null
+				|| (getPiece(from.getRank() + 1, from.getFile() - 1) != null
+						&& getPiece(from.getRank() + 1, from.getFile() - 1).isWhite() != from.getPiece().isWhite()))
+			moves.add(setMovement(from.getRank() + 1, from.getFile() - 1));
+
+		return moves;
 	}
 
 }
