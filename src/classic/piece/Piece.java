@@ -48,8 +48,8 @@ public abstract class Piece {
 		return true;
 	}
 
-	public Tile setMovement(int rank, int file) {
-		return new Tile(BoardUtils.board[rank][file].getPiece(), rank, file);
+	public Tile setMovement(int rank, int file, Tile from) {
+		return new Tile(from.getPiece(), rank, file);
 	}
 
 	public boolean canMove(Tile from, Tile to) {
@@ -59,7 +59,7 @@ public abstract class Piece {
 		Vector<Tile> moves = getMoves(from);
 		if (moves.size() < 1)
 			return false;
-
+		
 		for (Tile tile : moves) {
 			// try {
 			// System.out.println(tile.getFile() + "-" + tile.getRank() + "{" +
@@ -109,7 +109,7 @@ public abstract class Piece {
 	public abstract String pieceName();
 
 	public abstract String pieceCode();
-
+	public abstract Vector<Tile> getNextMoves(Tile to);
 	public abstract Vector<Tile> getMoves(Tile from);
 
 }

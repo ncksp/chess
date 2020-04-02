@@ -87,5 +87,9 @@ public class Movement {
 		return this.getTo().getFile();
 	}
 	
+	public void getNextMoves(){
+		this.getTo().getPiece().getNextMoves(this.to);
+	}
+	
 
 }

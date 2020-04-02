@@ -2,6 +2,7 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Tile;
 
@@ -29,6 +30,7 @@ public class Bishop extends Piece {
 	@Override
 	public Vector<Tile> getMoves(Tile from) {
 		// TODO Auto-generated method stub
+		Board.notSafePosition.remove(moves);
 		Tile[][] board = BoardUtils.board;
 		boolean white = board[from.getRank()][from.getFile()].isWhite();
 		moves = new Vector<>();
@@ -42,7 +44,7 @@ public class Bishop extends Piece {
 			}
 //			System.out.println("NE");
 //			System.out.println(j + "-" + i);
-			moves.add(setMovement(i, j));
+			moves.add(setMovement(i, j,from));
 		}
 
 		// SE
@@ -55,7 +57,7 @@ public class Bishop extends Piece {
 			}
 //			System.out.println("SE");
 //			System.out.println(j + "-" + i);
-			moves.add(setMovement(i, j));
+			moves.add(setMovement(i, j,from));
 		}
 
 		// SW
@@ -68,7 +70,7 @@ public class Bishop extends Piece {
 			}
 //			System.out.println("SW");
 //			System.out.println(j + "-" + i);
-			moves.add(setMovement(i, j));
+			moves.add(setMovement(i, j,from));
 		}
 
 		// NW
@@ -81,10 +83,15 @@ public class Bishop extends Piece {
 			}
 //			System.out.println("NW");
 //			System.out.println(j + "-" + i);
-			moves.add(setMovement(i, j));
+			moves.add(setMovement(i, j,from));
 		}
-
 		return moves;
+	}
+
+	@Override
+	public Vector<Tile> getNextMoves(Tile to) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

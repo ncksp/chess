@@ -2,6 +2,7 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Tile;
 
@@ -25,6 +26,7 @@ public class Pawn extends Piece {
 
 	@Override
 	public Vector<Tile> getMoves(Tile from) {
+		Board.notSafePosition.remove(moves);
 		Tile[][] board = BoardUtils.board;
 		boolean white = board[from.getRank()][from.getFile()].isWhite();
 		moves = new Vector<>();
@@ -42,35 +44,41 @@ public class Pawn extends Piece {
 
 		// System.out.println(canMoveDouble);
 		if (valid(from.getRank() + sub, from.getFile()) && getPiece(from.getRank() + sub, from.getFile()) == null)
-			moves.add(setMovement(from.getRank() + sub, from.getFile()));
+			moves.add(setMovement(from.getRank() + sub, from.getFile(),from));
 
 		if (valid(from.getRank() + sub, from.getFile()) && white
 				&& getPiece(from.getRank() - 1, from.getFile() - 1) != null
 				&& !getPiece(from.getRank() - 1, from.getFile() - 1).isWhite())
-			moves.add(setMovement(from.getRank() - 1, from.getFile() - 1));
+			moves.add(setMovement(from.getRank() - 1, from.getFile() - 1,from));
 
 		if (valid(from.getRank() + sub, from.getFile()) && white
 				&& getPiece(from.getRank() - 1, from.getFile() + 1) != null
 				&& !getPiece(from.getRank() - 1, from.getFile() + 1).isWhite())
-			moves.add(setMovement(from.getRank() - 1, from.getFile() + 1));
+			moves.add(setMovement(from.getRank() - 1, from.getFile() + 1,from));
 
 		if (valid(from.getRank() + sub, from.getFile()) && !white
 				&& getPiece(from.getRank() + 1, from.getFile() - 1) != null
 				&& getPiece(from.getRank() + 1, from.getFile() - 1).isWhite())
-			moves.add(setMovement(from.getRank() + 1, from.getFile() - 1));
+			moves.add(setMovement(from.getRank() + 1, from.getFile() - 1,from));
 
 		if (valid(from.getRank() + sub, from.getFile()) && !white
 				&& getPiece(from.getRank() + 1, from.getFile() + 1) != null
 				&& getPiece(from.getRank() + 1, from.getFile() + 1).isWhite())
-			moves.add(setMovement(from.getRank() + 1, from.getFile() + 1));
+			moves.add(setMovement(from.getRank() + 1, from.getFile() + 1,from));
 
 		if (!canMoveDouble)
 			return moves;
 
 		if (valid(from.getRank() + sub, from.getFile()) && getPiece(from.getRank() + sub + sub, from.getFile()) == null)
-			moves.add(setMovement(from.getRank() + sub + sub, from.getFile()));
+			moves.add(setMovement(from.getRank() + sub + sub, from.getFile(),from));
 
 		return moves;
+	}
+
+	@Override
+	public Vector<Tile> getNextMoves(Tile to) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

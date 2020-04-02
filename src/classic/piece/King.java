@@ -2,12 +2,22 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.Board;
 import classic.board.Tile;
 
 public class King extends Piece {
 
 	Vector<Tile> moves = new Vector<>();
+	private int[][] coordinate = { { 1, 0 }, // n
+			{ 1, 1 }, // ne
+			{ 0, 1 }, // e
+			{ -1, 1 }, // se
+			{ -1, 0 }, // s
+			{ -1, -1 }, // sw
+			{ 0, -1 }, // w
+			{ +1, -1 },// nw
 
+	};
 	private boolean castling = false;
 
 	public King(boolean white) {
@@ -34,55 +44,23 @@ public class King extends Piece {
 
 	@Override
 	public Vector<Tile> getMoves(Tile from) {
-		// N
-		if (valid(from.getRank() + 1, from.getFile()) && getPiece(from.getRank() + 1, from.getFile()) == null
-				|| (getPiece(from.getRank() + 1, from.getFile()) != null
-						&& getPiece(from.getRank() + 1, from.getFile()).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank() + 1, from.getFile()));
-
-		// NE
-		if (valid(from.getRank() + 1, from.getFile() + 1) && getPiece(from.getRank() + 1, from.getFile() + 1) == null
-				|| (getPiece(from.getRank() + 1, from.getFile() + 1) != null
-						&& getPiece(from.getRank() + 1, from.getFile() + 1).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank() + 1, from.getFile() + 1));
-
-		// E
-		if (valid(from.getRank(), from.getFile() + 1) && getPiece(from.getRank(), from.getFile() + 1) == null
-				|| (getPiece(from.getRank(), from.getFile() + 1) != null
-						&& getPiece(from.getRank(), from.getFile() + 1).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank(), from.getFile() + 1));
-
-		// SE
-		if (valid(from.getRank() - 1, from.getFile() + 1) && getPiece(from.getRank() - 1, from.getFile() + 1) == null
-				|| (getPiece(from.getRank() - 1, from.getFile() + 1) != null
-						&& getPiece(from.getRank() - 1, from.getFile() + 1).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank() - 1, from.getFile() + 1));
-
-		// S
-		if (valid(from.getRank() - 1, from.getFile()) && getPiece(from.getRank() - 1, from.getFile()) == null
-				|| (getPiece(from.getRank() - 1, from.getFile()) != null
-						&& getPiece(from.getRank() - 1, from.getFile()).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank() - 1, from.getFile()));
-
-		// SW
-		if (valid(from.getRank() - 1, from.getFile() - 1) && getPiece(from.getRank() - 1, from.getFile() - 1) == null
-				|| (getPiece(from.getRank() - 1, from.getFile() - 1) != null
-						&& getPiece(from.getRank() - 1, from.getFile() - 1).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank() - 1, from.getFile() - 1));
-
-		// W
-		if (valid(from.getRank(), from.getFile() - 1) && getPiece(from.getRank(), from.getFile() - 1) == null
-				|| (getPiece(from.getRank(), from.getFile() - 1) != null
-						&& getPiece(from.getRank(), from.getFile() - 1).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank(), from.getFile() - 1));
-
-		// NW
-		if (valid(from.getRank() + 1, from.getFile() - 1) && getPiece(from.getRank() + 1, from.getFile() - 1) == null
-				|| (getPiece(from.getRank() + 1, from.getFile() - 1) != null
-						&& getPiece(from.getRank() + 1, from.getFile() - 1).isWhite() != from.getPiece().isWhite()))
-			moves.add(setMovement(from.getRank() + 1, from.getFile() - 1));
+		moves = new Vector<>();
+		for (int[] is : this.coordinate) {
+			if (valid(from.getRank() + is[0], from.getFile() + is[1])
+					&& getPiece(from.getRank() + is[0], from.getFile() + is[1]) == null
+					|| (getPiece(from.getRank() + is[0], from.getFile() + is[1]) != null
+							&& getPiece(from.getRank() + is[0], from.getFile() + is[1]).isWhite() != from.getPiece()
+									.isWhite()))
+				moves.add(setMovement(from.getRank() + is[0], from.getFile() + is[1],from));
+		}
 
 		return moves;
+	}
+
+	@Override
+	public Vector<Tile> getNextMoves(Tile to) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

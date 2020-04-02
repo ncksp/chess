@@ -2,6 +2,7 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Tile;
 
@@ -25,6 +26,7 @@ public class Rook extends Piece {
 
 	@Override
 	public Vector<Tile> getMoves(Tile from) {
+		Board.notSafePosition.remove(moves);
 		Tile[][] board = BoardUtils.board;
 		boolean white = board[from.getRank()][from.getFile()].isWhite();
 		moves = new Vector<>();
@@ -36,7 +38,7 @@ public class Rook extends Piece {
 				}
 			} catch (Exception e) {
 			}
-			moves.add(setMovement(i, from.getFile()));
+			moves.add(setMovement(i, from.getFile(), from));
 		}
 
 		// down
@@ -48,7 +50,7 @@ public class Rook extends Piece {
 			} catch (Exception e) {
 			}
 
-			moves.add(setMovement(i, from.getFile()));
+			moves.add(setMovement(i, from.getFile(), from));
 		}
 		// left
 		for (int i = from.getFile() - 1; i >= 0; i--) {
@@ -59,7 +61,7 @@ public class Rook extends Piece {
 			} catch (Exception e) {
 			}
 
-			moves.add(setMovement(from.getRank(), i));
+			moves.add(setMovement(from.getRank(), i, from));
 		}
 		// right
 		for (int i = from.getFile() + 1; i < 8; i++) {
@@ -70,11 +72,16 @@ public class Rook extends Piece {
 			} catch (Exception e) {
 			}
 
-			moves.add(setMovement(from.getRank(), i));
+			moves.add(setMovement(from.getRank(), i, from));
 		}
-		
-	
+
 		return moves;
+	}
+
+	@Override
+	public Vector<Tile> getNextMoves(Tile to) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
