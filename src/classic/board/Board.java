@@ -13,7 +13,6 @@ public class Board {
 	public static BlackPlayer black = new BlackPlayer();
 	public static Vector<Movement> movesPlayer = new Vector<>();
 	public static Vector<Tile> notSafePosition = new Vector<>();
-
 	public static void invalidFormat() {
 		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
 		Utilities.scan.nextLine();
@@ -68,17 +67,19 @@ public class Board {
 			destPiece.setKilled(true);
 			movement.setPieceKilled(destPiece);
 		}
+		
 		movesPlayer.add(movement);
 
 		movement.getTo().setPiece(startPiece);
 		movement.getFrom().setPiece(null);
 
 		movement.getNextMoves();
-
+		System.out.println(notSafePosition.size());
 		for (Tile tile : notSafePosition) {
 			System.out.println(
 					"Rank : " + tile.getRank() + "| File : " + tile.getFile() + "--" + tile.getPiece().isWhite());
 		}
+		
 		return true;
 	}
 }

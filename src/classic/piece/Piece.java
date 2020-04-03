@@ -2,6 +2,7 @@ package classic.piece;
 
 import java.util.Vector;
 
+import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Tile;
 
@@ -59,7 +60,7 @@ public abstract class Piece {
 		Vector<Tile> moves = getMoves(from);
 		if (moves.size() < 1)
 			return false;
-		
+
 		for (Tile tile : moves) {
 			// try {
 			// System.out.println(tile.getFile() + "-" + tile.getRank() + "{" +
@@ -106,10 +107,26 @@ public abstract class Piece {
 		return false;
 	}
 
+	public Vector<Tile> getNextMoves(Tile to) {
+		// TODO Auto-generated method stub
+		Vector<Tile> tempNotSafePosition = new Vector<>();
+
+		tempNotSafePosition.addAll(Board.notSafePosition);
+		for (Tile tile : tempNotSafePosition) {
+			if (tile.getPiece().getClass() == this.getClass() && tile.getPiece().isWhite() == to.isWhite())
+				Board.notSafePosition.removeElement(tile);
+		}
+
+		tempNotSafePosition.clear();
+		Board.notSafePosition.addAll(getMoves(to));
+		System.out.println("----------------------");
+		return null;
+	}
+
 	public abstract String pieceName();
 
 	public abstract String pieceCode();
-	public abstract Vector<Tile> getNextMoves(Tile to);
+
 	public abstract Vector<Tile> getMoves(Tile from);
 
 }

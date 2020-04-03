@@ -2,7 +2,6 @@ package classic.piece;
 
 import java.util.Vector;
 
-import classic.board.Board;
 import classic.board.Tile;
 
 public class King extends Piece {
@@ -55,12 +54,6 @@ public class King extends Piece {
 		}
 
 		return moves;
-	}
-
-	@Override
-	public Vector<Tile> getNextMoves(Tile to) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

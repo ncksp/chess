@@ -1,9 +1,7 @@
 package classic.piece;
 
-import java.util.LinkedHashSet;
 import java.util.Vector;
 
-import classic.board.Board;
 import classic.board.Tile;
 
 public class Knight extends Piece {
@@ -47,20 +45,6 @@ public class Knight extends Piece {
 
 		return moves;
 
-	}
-
-	@Override
-	public Vector<Tile> getNextMoves(Tile to) {
-		// TODO Auto-generated method stub
-		System.out.println(to.getCode() + " " + to.getRank() + " " + to.getFile());
-
-		Board.notSafePosition.addAll(getMoves(to));
-		for (Tile tile : Board.notSafePosition) {
-			System.out.println(
-					"Rank : " + tile.getRank() + "| File : " + tile.getFile() + "--" + tile.getPiece().isWhite());
-		}
-		System.out.println("----------------------");
-		return null;
 	}
 
 }

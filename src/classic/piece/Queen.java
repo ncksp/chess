@@ -32,10 +32,4 @@ public class Queen extends Piece {
 		return moves;
 	}
 
-	@Override
-	public Vector<Tile> getNextMoves(Tile to) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
