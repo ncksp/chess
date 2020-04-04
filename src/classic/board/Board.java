@@ -65,7 +65,10 @@ public class Board {
 			movement = BoardUtils.convertCoordinate(notation, type);
 			if (movement == null) {
 				invalidFormat();
-			} else if (!makeMove(movement, player)) {
+				continue;
+			} 
+			
+			if (!makeMove(movement, player)) {
 				System.out.println("Invalid Move");
 				loop = true;
 			}
