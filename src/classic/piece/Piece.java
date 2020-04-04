@@ -54,12 +54,14 @@ public abstract class Piece {
 	}
 
 	public boolean canMove(Tile from, Tile to) {
-		if (!isValid(from, to))
+		if (!isValid(from, to)){
 			return false;
+		}
 
 		Vector<Tile> moves = getMoves(from);
-		if (moves.size() < 1)
+		if (moves.size() < 1){
 			return false;
+		}
 
 		for (Tile tile : moves) {
 			// try {
@@ -103,8 +105,7 @@ public abstract class Piece {
 			}
 
 		}
-
-		return false;
+		return true;
 	}
 
 	public Vector<Tile> getNextMoves(Tile to) {
@@ -114,6 +115,9 @@ public abstract class Piece {
 		tempNotSafePosition.addAll(Board.notSafePosition);
 		for (Tile tile : tempNotSafePosition) {
 			if (tile.getPiece().getClass() == this.getClass() && tile.getPiece().isWhite() == to.isWhite())
+				Board.notSafePosition.removeElement(tile);
+			
+			if(tile.getPiece().isKilled())
 				Board.notSafePosition.removeElement(tile);
 		}
 

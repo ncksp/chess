@@ -46,11 +46,11 @@ public class King extends Piece {
 		moves = new Vector<>();
 		for (int[] is : this.coordinate) {
 			if (valid(from.getRank() + is[0], from.getFile() + is[1])
-					&& getPiece(from.getRank() + is[0], from.getFile() + is[1]) == null
-					|| (getPiece(from.getRank() + is[0], from.getFile() + is[1]) != null
-							&& getPiece(from.getRank() + is[0], from.getFile() + is[1]).isWhite() != from.getPiece()
-									.isWhite()))
-				moves.add(setMovement(from.getRank() + is[0], from.getFile() + is[1],from));
+					&& (getPiece(from.getRank() + is[0], from.getFile() + is[1]) == null
+							|| (getPiece(from.getRank() + is[0], from.getFile() + is[1]) != null
+									&& getPiece(from.getRank() + is[0], from.getFile() + is[1]).isWhite() != from
+											.getPiece().isWhite())))
+				moves.add(setMovement(from.getRank() + is[0], from.getFile() + is[1], from));
 		}
 
 		return moves;
