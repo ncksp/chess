@@ -60,7 +60,7 @@ public class Movement {
 
 	public boolean canMove() {
 
-		return this.getFrom().getPiece().canMove(this.getFrom(), this.getTo());
+		return this.getFrom().getPiece().canMove(this.getPlayer(), this.getFrom(), this.getTo());
 	}
 
 	public boolean fromIsWhite() {

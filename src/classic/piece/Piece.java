@@ -5,6 +5,7 @@ import java.util.Vector;
 import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Tile;
+import classic.player.Player;
 
 public abstract class Piece {
 	private boolean killed = false;
@@ -53,13 +54,18 @@ public abstract class Piece {
 		return new Tile(from.getPiece(), rank, file);
 	}
 
-	public boolean canMove(Tile from, Tile to) {
-		if (!isValid(from, to)){
+	public boolean canMove(Player player, Tile from, Tile to) {
+		if (!isValid(from, to)) {
 			return false;
 		}
 
 		Vector<Tile> moves = getMoves(from);
-		if (moves.size() < 1){
+		if (from.getPiece().getClass() == King.class
+				&& Math.abs(from.getFile() - to.getFile()) == 2) {
+			return isCanToCastling(player, from, to);
+		}
+
+		if (moves.size() < 1) {
 			return false;
 		}
 
@@ -105,19 +111,18 @@ public abstract class Piece {
 			}
 
 		}
-		return true;
+		return false;
 	}
 
 	public Vector<Tile> getNextMoves(Tile to) {
-		// TODO Auto-generated method stub
 		Vector<Tile> tempNotSafePosition = new Vector<>();
 
 		tempNotSafePosition.addAll(Board.notSafePosition);
 		for (Tile tile : tempNotSafePosition) {
 			if (tile.getPiece().getClass() == this.getClass() && tile.getPiece().isWhite() == to.isWhite())
 				Board.notSafePosition.removeElement(tile);
-			
-			if(tile.getPiece().isKilled())
+
+			if (tile.getPiece().isKilled())
 				Board.notSafePosition.removeElement(tile);
 		}
 
@@ -125,6 +130,42 @@ public abstract class Piece {
 		Board.notSafePosition.addAll(getMoves(to));
 		System.out.println("----------------------");
 		return null;
+	}
+
+	public boolean isCanToCastling(Player player, Tile from, Tile to) {
+		if (from.getRank() != 7 && from.getRank() != 0) {
+			return false;
+		}
+		if (player.isCastling()) {
+			return false;
+		}
+
+		return from.getFile() - to.getFile() > 0 ? queenCastling(player, from, to) : kingCastling(player, from, to);
+	}
+
+	private boolean kingCastling(Player player, Tile from, Tile to) {
+		// TODO Auto-generated method stub
+		for (int i = from.getFile() + 1; i < 7; i++) {
+			if (BoardUtils.board[from.getRank()][i].getPiece() != null)
+				return false;
+		}
+
+		player.setCastling(true);
+		BoardUtils.board[from.getRank()][5].setPiece(BoardUtils.board[from.getRank()][7].getPiece());
+		BoardUtils.board[from.getRank()][7].setPiece(null);
+		return true;
+	}
+
+	private boolean queenCastling(Player player, Tile from, Tile to) {
+		for (int i = from.getFile() - 1; i > 0; i--) {
+			if (BoardUtils.board[from.getRank()][i].getPiece() != null)
+				return false;
+		}
+
+		player.setCastling(true);
+		BoardUtils.board[from.getRank()][3].setPiece(BoardUtils.board[from.getRank()][0].getPiece());
+		BoardUtils.board[from.getRank()][0].setPiece(null);
+		return true;
 	}
 
 	public abstract String pieceName();

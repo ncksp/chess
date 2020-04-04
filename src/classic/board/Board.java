@@ -7,6 +7,7 @@ import classic.piece.Piece;
 import classic.player.BlackPlayer;
 import classic.player.Player;
 import classic.player.WhitePlayer;
+import main.Main;
 import utilities.Utilities;
 
 public class Board {
@@ -95,7 +96,11 @@ public class Board {
 			destPiece.setKilled(true);
 			movement.setPieceKilled(destPiece);
 		}
-
+		
+		if(destPiece != null && destPiece.getClass() == King.class){
+			Main.win = destPiece.isWhite() ? 1 : 0;
+		}
+			
 		movesPlayer.add(movement);
 
 		if (movement.getStartPiece().getClass() == King.class)

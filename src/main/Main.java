@@ -34,7 +34,20 @@ public class Main {
 			BoardUtils.drawBoard();
 			playerMove = Board.setPlayerMove(playerMove, type);
 		} while (win == -1);
+		
+		printWinner(win);
+		System.out.println();
+	}
 
+	private void printWinner(int win2) {
+		// TODO Auto-generated method stub
+		if(win == 0){
+			System.out.println("Black win");
+			return;
+		}
+		
+		System.out.println("White win");
+		return;
 	}
 
 	public static void main(String[] args) {

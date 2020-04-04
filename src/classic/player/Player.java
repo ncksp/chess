@@ -5,7 +5,7 @@ import classic.board.Tile;
 public class Player {
 	protected boolean whiteSide;
 	protected boolean isCheck;
-
+	protected boolean isCastling = false;
 	protected Tile king;
 
 	public boolean isWhiteSide() {
@@ -26,6 +26,14 @@ public class Player {
 
 	public void setCheck(boolean isCheck) {
 		this.isCheck = isCheck;
+	}
+
+	public boolean isCastling() {
+		return isCastling;
+	}
+
+	public void setCastling(boolean isCastling) {
+		this.isCastling = isCastling;
 	}
 
 }

@@ -17,18 +17,9 @@ public class King extends Piece {
 			{ +1, -1 },// nw
 
 	};
-	private boolean castling = false;
 
 	public King(boolean white) {
 		super(white);
-	}
-
-	public boolean isCastling() {
-		return castling;
-	}
-
-	public void setCastling(boolean castling) {
-		this.castling = castling;
 	}
 
 	@Override
