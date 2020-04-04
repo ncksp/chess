@@ -85,22 +85,26 @@ public class Board {
 		if (movement.fromIsWhite() != player.isWhiteSide())
 			return false;
 
-		if (!movement.canMove()){
+		if (!movement.canMove()) {
 			return false;
 		}
 
 		movement.setPlayer(player);
 
+		if (movement.getStartPiece().getClass() == King.class && !isMovementSafePosition(movement, player)){
+			System.out.println("King must always in safe position");
+			return false;
+		}
 		Piece destPiece = movement.getEndPiece();
 		if (destPiece != null) {
 			destPiece.setKilled(true);
 			movement.setPieceKilled(destPiece);
 		}
-		
-		if(destPiece != null && destPiece.getClass() == King.class){
+
+		if (destPiece != null && destPiece.getClass() == King.class) {
 			Main.win = destPiece.isWhite() ? 1 : 0;
 		}
-			
+
 		movesPlayer.add(movement);
 
 		if (movement.getStartPiece().getClass() == King.class)
@@ -111,6 +115,22 @@ public class Board {
 
 		movement.getNextMoves();
 
+		return true;
+	}
+
+	private static boolean isMovementSafePosition(Movement movement, Player player) {
+		// TODO Auto-generated method stub
+		int file = movement.toFile();
+		int rank = movement.toRank();
+		
+		Tile result = Board.notSafePosition.stream()
+				.filter(e -> e.getFile() == file && e.getRank() == rank && e.isWhite() != player.isWhiteSide())
+				.findAny()
+				.orElse(null);
+		
+		if(result != null)
+			return false;
+		
 		return true;
 	}
 
