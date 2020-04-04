@@ -39,12 +39,15 @@ public class BoardUtils {
 			board[1][i] = new Tile(new Pawn(false), 1, i);
 			board[6][i] = new Tile(new Pawn(true), 6, i);
 		}
+
+		for (int i = 2; i < 6; i++) {
+			for (int j = 0; j < 8; j++) {
+				board[i][j] = new Tile(null, i, j);
+			}
+		}
 		
-		for (int i = 2; i < 6; i++) { 
-            for (int j = 0; j < 8; j++) { 
-            	board[i][j] = new Tile(null, i, j);
-            } 
-        } 
+		Board.white.setKing(board[7][4]);
+		Board.black.setKing(board[0][4]);
 	}
 
 	public static String getCode(int rank, int file) {
@@ -63,6 +66,7 @@ public class BoardUtils {
 	}
 
 	public static void drawBoard() {
+
 		for (int i = 0; i < RANK; i++) {
 			for (int j = 0; j < FILE; j++) {
 				System.out.print(" " + getCode(i, j) + " ");
@@ -73,6 +77,10 @@ public class BoardUtils {
 			System.out.print(" " + (char) (k + 65) + " ");
 		}
 		System.out.println();
+//		for (Tile tile : Board.notSafePosition) {
+//			System.out.println("Rank : " + (8-tile.getRank()) + "| File : " + (char) (tile.getFile() + 'A') + "--"
+//					+ tile.getPiece().isWhite());
+//		}
 	}
 
 	public static boolean checkFetchNotation(String[] notation) {
@@ -94,7 +102,7 @@ public class BoardUtils {
 		int toRank = RANK - (getIndexTile(to.charAt(1), '0'));
 		movement.setFrom(board[fromRank][fromFile]);
 		movement.setTo(board[toRank][toFile]);
-		
+
 		return movement;
 	}
 

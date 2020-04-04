@@ -2,6 +2,7 @@ package classic.board;
 
 import java.util.Vector;
 
+import classic.piece.King;
 import classic.piece.Piece;
 import classic.player.BlackPlayer;
 import classic.player.Player;
@@ -13,6 +14,7 @@ public class Board {
 	public static BlackPlayer black = new BlackPlayer();
 	public static Vector<Movement> movesPlayer = new Vector<>();
 	public static Vector<Tile> notSafePosition = new Vector<>();
+
 	public static void invalidFormat() {
 		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
 		Utilities.scan.nextLine();
@@ -20,11 +22,33 @@ public class Board {
 
 	public static int setPlayerMove(int move, int type) {
 		if (move % 2 == 1)
-			move("white move: ", type, white);
+			checkMove(white, type, "white move: ");
 		else
-			move("black move: ", type, black);
+			checkMove(black, type, "black move: ");
 
 		return move == 2 ? 1 : move + 1;
+	}
+
+	public static boolean isPlayerCheck(Player player) {
+		for (Tile tile : notSafePosition) {
+
+			if (tile.getFile() == player.getKing().getFile() && tile.getRank() == player.getKing().getRank()
+					&& tile.isWhite() != player.isWhiteSide())
+				return true;
+
+		}
+		return false;
+	}
+
+	public static void checkMove(Player player, int type, String text) {
+
+		player.setCheck(isPlayerCheck(player));
+
+		if (player.isCheck()) {
+			System.out.println("You're in check, move your King");
+		}
+
+		move(text, type, player);
 	}
 
 	public static void move(String text, int type, Player player) {
@@ -51,14 +75,18 @@ public class Board {
 	public static boolean makeMove(Movement movement, Player player) {
 		Piece startPiece = movement.getStartPiece();
 
+		if (player.isCheck() && !playerCheckPositionMove(movement, player)) {
+			return false;
+		}
 		if (startPiece == null)
 			return false;
 
 		if (movement.fromIsWhite() != player.isWhiteSide())
 			return false;
 
-		if (!movement.canMove())
+		if (!movement.canMove()){
 			return false;
+		}
 
 		movement.setPlayer(player);
 
@@ -67,19 +95,27 @@ public class Board {
 			destPiece.setKilled(true);
 			movement.setPieceKilled(destPiece);
 		}
-		
+
 		movesPlayer.add(movement);
+
+		if (movement.getStartPiece().getClass() == King.class)
+			player.setKing(movement.getTo());
 
 		movement.getTo().setPiece(startPiece);
 		movement.getFrom().setPiece(null);
 
 		movement.getNextMoves();
-		System.out.println(notSafePosition.size());
-		for (Tile tile : notSafePosition) {
-			System.out.println(
-					"Rank : " + tile.getRank() + "| File : " + tile.getFile() + "--" + tile.getPiece().isWhite());
-		}
-		
+
 		return true;
 	}
+
+	private static boolean playerCheckPositionMove(Movement movement, Player player) {
+		// TODO Auto-generated method stub
+
+		if (movement.getStartPiece().getClass() != King.class) {
+			return false;
+		}
+		return true;
+	}
+
 }
