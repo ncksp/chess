@@ -1,5 +1,6 @@
 package classic.player;
 
+import classic.board.Board;
 import classic.board.Tile;
 
 public class Player {
@@ -35,5 +36,15 @@ public class Player {
 	public void setCastling(boolean isCastling) {
 		this.isCastling = isCastling;
 	}
+	
+	public void definePlayerCheck() {
+		for (Tile tile : Board.notSafePosition) {
+			if (tile.getFile() == this.getKing().getFile() && tile.getRank() == this.getKing().getRank()
+					&& tile.isWhite() != this.isWhiteSide())
+				isCheck=true;
+			break;
 
+		}
+		isCheck = false;
+	}
 }

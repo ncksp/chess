@@ -36,13 +36,8 @@ public class Pawn extends Piece {
 		int currentPosition = from.getRank();
 		int max = white ? 4 : 3;
 
-		// System.out.println(max);
-		// System.out.println(max - currentPosition);
-		// System.out.println(Math.abs(max - currentPosition));
-
 		boolean canMoveDouble = Math.abs(max - currentPosition) == 2 ? true : false;
-
-		// System.out.println(canMoveDouble);
+		
 		if (valid(from.getRank() + sub, from.getFile()) && getPiece(from.getRank() + sub, from.getFile()) == null)
 			moves.add(setMovement(from.getRank() + sub, from.getFile(),from));
 

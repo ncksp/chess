@@ -59,7 +59,6 @@ public class Movement {
 	}
 
 	public boolean canMove() {
-
 		return this.getFrom().getPiece().canMove(this.getPlayer(), this.getFrom(), this.getTo());
 	}
 

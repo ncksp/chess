@@ -2,11 +2,11 @@ package main;
 
 import classic.board.Board;
 import classic.board.BoardUtils;
-import utilities.Utilities;
+import utilities.MainUtilities;
 
 public class Main {
 
-	Utilities util = new Utilities();
+	MainUtilities util = new MainUtilities();
 	public static int win = -1;
 	int playerMove = 1;
 
@@ -18,7 +18,7 @@ public class Main {
 			case 1:
 				// play(1);
 				System.out.println("Algebraic not ready, use Coordinate please");
-				Utilities.scan.nextLine();
+				MainUtilities.scan.nextLine();
 				break;
 			case 2:
 				play(2);
@@ -28,28 +28,19 @@ public class Main {
 	}
 
 	private void play(int type) {
-		BoardUtils.createBoard();
+		BoardUtils boardUtils = new BoardUtils();
+		Board board = new Board();
+		boardUtils.createBoard();
 		do {
 			util.cls();
-			BoardUtils.drawBoard();
-			playerMove = Board.setPlayerMove(playerMove, type);
+			boardUtils.drawBoard();
+			playerMove = board.setPlayerMove(playerMove, type);
 		} while (win == -1);
 		
-		printWinner(win);
+		util.printWinner(win);
 		System.out.println();
 	}
-
-	private void printWinner(int win2) {
-		// TODO Auto-generated method stub
-		if(win == 0){
-			System.out.println("Black win");
-			return;
-		}
-		
-		System.out.println("White win");
-		return;
-	}
-
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new Main();

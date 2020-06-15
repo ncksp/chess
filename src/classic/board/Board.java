@@ -8,20 +8,16 @@ import classic.player.BlackPlayer;
 import classic.player.Player;
 import classic.player.WhitePlayer;
 import main.Main;
-import utilities.Utilities;
+import utilities.MainUtilities;
 
 public class Board {
-	public static WhitePlayer white = new WhitePlayer();
-	public static BlackPlayer black = new BlackPlayer();
-	public static Vector<Movement> movesPlayer = new Vector<>();
+	private WhitePlayer white = new WhitePlayer();
+	private BlackPlayer black = new BlackPlayer();
+	private Vector<Movement> movesPlayer = new Vector<>();
+	private BoardUtils util = new BoardUtils();
 	public static Vector<Tile> notSafePosition = new Vector<>();
-
-	public static void invalidFormat() {
-		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
-		Utilities.scan.nextLine();
-	}
-
-	public static int setPlayerMove(int move, int type) {
+	
+	public int setPlayerMove(int move, int type) {
 		if (move % 2 == 1)
 			checkMove(white, type, "white move: ");
 		else
@@ -29,22 +25,10 @@ public class Board {
 
 		return move == 2 ? 1 : move + 1;
 	}
-
-	public static boolean isPlayerCheck(Player player) {
-		for (Tile tile : notSafePosition) {
-
-			if (tile.getFile() == player.getKing().getFile() && tile.getRank() == player.getKing().getRank()
-					&& tile.isWhite() != player.isWhiteSide())
-				return true;
-
-		}
-		return false;
-	}
-
-	public static void checkMove(Player player, int type, String text) {
-
-		player.setCheck(isPlayerCheck(player));
-
+	
+	private void checkMove(Player player, int type, String text) {
+		System.out.println(player.getKing());
+		player.definePlayerCheck();
 		if (player.isCheck()) {
 			System.out.println("You're in check, move your King");
 		}
@@ -52,7 +36,7 @@ public class Board {
 		move(text, type, player);
 	}
 
-	public static void move(String text, int type, Player player) {
+	private void move(String text, int type, Player player) {
 		Movement movement = Movement.getInstance();
 		String notation;
 		boolean loop = true;
@@ -60,11 +44,11 @@ public class Board {
 			loop = false;
 			System.out.print(text);
 
-			notation = Utilities.scan.nextLine();
+			notation = MainUtilities.scan.nextLine();
 
-			movement = BoardUtils.convertCoordinate(notation, type);
+			movement = util.convertCoordinate(notation, type);
 			if (movement == null) {
-				invalidFormat();
+				util.invalidFormatMovement();
 				continue;
 			} 
 			
@@ -76,28 +60,18 @@ public class Board {
 
 	}
 
-	public static boolean makeMove(Movement movement, Player player) {
+	private boolean makeMove(Movement movement, Player player) {
 		Piece startPiece = movement.getStartPiece();
-
-		if (player.isCheck() && !playerCheckPositionMove(movement, player)) {
+		if(!isLegalMove(movement, player))
 			return false;
-		}
-		if (startPiece == null)
-			return false;
-
-		if (movement.fromIsWhite() != player.isWhiteSide())
-			return false;
-
-		if (!movement.canMove()) {
-			return false;
-		}
-
+		
 		movement.setPlayer(player);
 
 		if (movement.getStartPiece().getClass() == King.class && !isMovementSafePosition(movement, player)){
 			System.out.println("King must always in safe position");
 			return false;
 		}
+		
 		Piece destPiece = movement.getEndPiece();
 		if (destPiece != null) {
 			destPiece.setKilled(true);
@@ -120,9 +94,25 @@ public class Board {
 
 		return true;
 	}
+	private boolean isLegalMove(Movement movement, Player player){
+		Piece startPiece = movement.getStartPiece();
 
-	private static boolean isMovementSafePosition(Movement movement, Player player) {
-		// TODO Auto-generated method stub
+		if (player.isCheck() && !playerCheckPositionMove(movement, player))
+			return false;
+		
+		if (startPiece == null)
+			return false;
+
+		if (movement.fromIsWhite() != player.isWhiteSide())
+			return false;
+
+		if (!movement.canMove()) 
+			return false;	
+		
+		return true;
+	}
+	
+	private boolean isMovementSafePosition(Movement movement, Player player) {
 		int file = movement.toFile();
 		int rank = movement.toRank();
 		
@@ -137,9 +127,7 @@ public class Board {
 		return true;
 	}
 
-	private static boolean playerCheckPositionMove(Movement movement, Player player) {
-		// TODO Auto-generated method stub
-
+	private boolean playerCheckPositionMove(Movement movement, Player player) {
 		if (movement.getStartPiece().getClass() != King.class) {
 			return false;
 		}

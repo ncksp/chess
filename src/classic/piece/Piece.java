@@ -58,16 +58,20 @@ public abstract class Piece {
 		if (!isValid(from, to)) {
 			return false;
 		}
+		System.out.println("A");
 
 		Vector<Tile> moves = getMoves(from);
 		if (from.getPiece().getClass() == King.class
 				&& Math.abs(from.getFile() - to.getFile()) == 2) {
 			return isCanToCastling(player, from, to);
 		}
+		System.out.println("B");
 
 		if (moves.size() < 1) {
 			return false;
 		}
+		System.out.println("C");
+
 
 		for (Tile tile : moves) {
 			// try {
@@ -81,7 +85,8 @@ public abstract class Piece {
 			// + to.getRank() + "} null");
 			// }
 			// kalo piece kosong dan data sama
-			if (tile.getFile() == to.getFile() && tile.getRank() == to.getRank() && to.getPiece() == null) {
+			if (tile.getFile() == to.getFile() && tile.getRank() == to.getRank() 
+					&& (to.getPiece() == null || to.getPiece() != null)) {
 				// System.out.println("a");
 				return true;
 			}
@@ -128,7 +133,7 @@ public abstract class Piece {
 
 		tempNotSafePosition.clear();
 		Board.notSafePosition.addAll(getMoves(to));
-		System.out.println("----------------------");
+//		System.out.println("----------------------");
 		return null;
 	}
 
@@ -144,7 +149,6 @@ public abstract class Piece {
 	}
 
 	private boolean kingCastling(Player player, Tile from, Tile to) {
-		// TODO Auto-generated method stub
 		for (int i = from.getFile() + 1; i < 7; i++) {
 			if (BoardUtils.board[from.getRank()][i].getPiece() != null)
 				return false;

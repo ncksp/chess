@@ -8,14 +8,20 @@ import classic.piece.Knight;
 import classic.piece.Pawn;
 import classic.piece.Queen;
 import classic.piece.Rook;
+import utilities.MainUtilities;
 
 public class BoardUtils {
 	public static Tile[][] board = new Tile[8][8];
 	final static int FILE = 8;
 	final static int RANK = 8;
 	final static String matcherNotation = "[A-H][1-8]";
-
-	public static void createBoard() {
+	
+	public void invalidFormatMovement() {
+		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
+		MainUtilities.scan.nextLine();
+	}
+	
+	public void createBoard() {
 
 		board[0][0] = new Tile(new Rook(false), 0, 0);
 		board[0][1] = new Tile(new Knight(false), 0, 1);
@@ -45,12 +51,9 @@ public class BoardUtils {
 				board[i][j] = new Tile(null, i, j);
 			}
 		}
-		
-		Board.white.setKing(board[7][4]);
-		Board.black.setKing(board[0][4]);
 	}
 
-	public static String getCode(int rank, int file) {
+	private String getCode(int rank, int file) {
 
 		String str = "-";
 		if (rank % 2 == file % 2)
@@ -65,7 +68,7 @@ public class BoardUtils {
 		return str;
 	}
 
-	public static void drawBoard() {
+	public void drawBoard() {
 
 		for (int i = 0; i < RANK; i++) {
 			for (int j = 0; j < FILE; j++) {
@@ -83,18 +86,18 @@ public class BoardUtils {
 //		}
 	}
 
-	public static boolean checkFetchNotation(String[] notation) {
+	private boolean checkFetchNotation(String[] notation) {
 		if (notation.length < 2)
 			return false;
 		return true;
 	}
 
-	public static int getIndexTile(char position, char indicator) {
+	private int getIndexTile(char position, char indicator) {
 		int index = (position - indicator);
 		return index;
 	}
 
-	public static Movement setMovement(Movement movement, String from, String to) {
+	private Movement setMovement(Movement movement, String from, String to) {
 		int fromFile = getIndexTile(from.charAt(0), 'A');
 		int fromRank = RANK - (getIndexTile(from.charAt(1), '0'));
 
@@ -106,12 +109,12 @@ public class BoardUtils {
 		return movement;
 	}
 
-	public static boolean checkNotation(String notation) {
+	private boolean checkNotation(String notation) {
 
 		return Pattern.compile(matcherNotation).matcher(notation).matches();
 	}
 
-	public static Movement convertCoordinate(String notation, int type) {
+	public Movement convertCoordinate(String notation, int type) {
 		Movement movement = Movement.getInstance();
 		if (type == 1)
 			movement = algebraicToIndex(notation, movement);
@@ -122,7 +125,7 @@ public class BoardUtils {
 
 	}
 
-	public static Movement coordinateToIndex(String notation, Movement movement) {
+	private Movement coordinateToIndex(String notation, Movement movement) {
 		String[] fetchNotation = notation.split("-");
 		if (!checkFetchNotation(fetchNotation))
 			return null;
@@ -136,8 +139,7 @@ public class BoardUtils {
 		return setMovement(movement, fetchNotation[0], fetchNotation[1]);
 	}
 
-	public static Movement algebraicToIndex(String notation, Movement movement) {
-
+	private Movement algebraicToIndex(String notation, Movement movement) {
 		return movement;
 	}
 
