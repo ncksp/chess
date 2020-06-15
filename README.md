@@ -11,7 +11,7 @@
 - [x] check
 - [x] castling
 - [x] validate illegal move: king must always in safe position
-- [ ] en passant
+- [x] en passant
 - [ ] pawn promotion
 - [ ] checkmate
 - [ ] draw on stalemate position
