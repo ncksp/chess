@@ -25,7 +25,7 @@ public class Rook extends Piece {
 	}
 
 	@Override
-	public Vector<Tile> getMoves(Tile from) {
+	public Vector<Tile> getMoves(Tile from, Tile to) {
 		Board.notSafePosition.remove(moves);
 		Tile[][] board = BoardUtils.board;
 		boolean white = board[from.getRank()][from.getFile()].isWhite();

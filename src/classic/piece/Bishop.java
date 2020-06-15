@@ -28,7 +28,7 @@ public class Bishop extends Piece {
 	}
 
 	@Override
-	public Vector<Tile> getMoves(Tile from) {
+	public Vector<Tile> getMoves(Tile from, Tile to) {
 		// TODO Auto-generated method stub
 		Board.notSafePosition.remove(moves);
 		Tile[][] board = BoardUtils.board;

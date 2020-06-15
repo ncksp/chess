@@ -32,7 +32,7 @@ public class Knight extends Piece {
 	}
 
 	@Override
-	public Vector<Tile> getMoves(Tile from) {
+	public Vector<Tile> getMoves(Tile from, Tile to) {
 		moves = new Vector<>();
 		for (int[] is : this.coordinate) {
 			if (valid(from.getRank() + is[0], from.getFile() + is[1])

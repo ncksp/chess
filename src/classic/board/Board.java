@@ -3,6 +3,7 @@ package classic.board;
 import java.util.Vector;
 
 import classic.piece.King;
+import classic.piece.Pawn;
 import classic.piece.Piece;
 import classic.player.BlackPlayer;
 import classic.player.Player;
@@ -27,7 +28,6 @@ public class Board {
 	}
 	
 	private void checkMove(Player player, int type, String text) {
-		System.out.println(player.getKing());
 		player.definePlayerCheck();
 		if (player.isCheck()) {
 			System.out.println("You're in check, move your King");
@@ -72,16 +72,6 @@ public class Board {
 			return false;
 		}
 		
-		Piece destPiece = movement.getEndPiece();
-		if (destPiece != null) {
-			destPiece.setKilled(true);
-			movement.setPieceKilled(destPiece);
-		}
-
-		if (destPiece != null && destPiece.getClass() == King.class) {
-			Main.win = destPiece.isWhite() ? 1 : 0;
-		}
-
 		movesPlayer.add(movement);
 
 		if (movement.getStartPiece().getClass() == King.class)
@@ -91,9 +81,40 @@ public class Board {
 		movement.getFrom().setPiece(null);
 
 		movement.getNextMoves();
-
+		
+		Piece destPiece = movement.getEndPiece();
+		if (destPiece != null) {
+			destPiece.setKilled(true);
+			movement.setPieceKilled(destPiece);
+		}
+		
+		if (destPiece != null && destPiece.getClass() == King.class) {
+			Main.win = destPiece.isWhite() ? 1 : 0;
+		}
+		
+		Piece enPassPiece = getEnPassantMove(movement,player);
+		if (enPassPiece != null) {
+			enPassPiece.setKilled(true);
+			movement.setPieceKilled(enPassPiece);
+		}
+		
 		return true;
 	}
+	
+	private Piece getEnPassantMove(Movement movement, Player player) {
+		if(!((Pawn) movement.getEndPiece()).isEnPassant()){
+			return null;
+		}
+		int sub = player.isWhiteSide() ? 1 : -1; 
+		int rank = movement.getTo().getRank() +sub;
+		int file = movement.getTo().getFile();
+		Piece enPassPiece = BoardUtils.board[rank][file].getPiece();
+		
+
+		BoardUtils.board[rank][file] = new Tile(null,rank , file);
+		return enPassPiece;
+	}
+
 	private boolean isLegalMove(Movement movement, Player player){
 		Piece startPiece = movement.getStartPiece();
 

@@ -55,23 +55,16 @@ public abstract class Piece {
 	}
 
 	public boolean canMove(Player player, Tile from, Tile to) {
-		if (!isValid(from, to)) {
+		if (!isValid(from, to)) 
 			return false;
-		}
-		System.out.println("A");
-
-		Vector<Tile> moves = getMoves(from);
+		
+		Vector<Tile> moves = getMoves(from, to);
 		if (from.getPiece().getClass() == King.class
-				&& Math.abs(from.getFile() - to.getFile()) == 2) {
+				&& Math.abs(from.getFile() - to.getFile()) == 2) 
 			return isCanToCastling(player, from, to);
-		}
-		System.out.println("B");
 
-		if (moves.size() < 1) {
+		if (moves.size() < 1) 
 			return false;
-		}
-		System.out.println("C");
-
 
 		for (Tile tile : moves) {
 			// try {
@@ -132,7 +125,7 @@ public abstract class Piece {
 		}
 
 		tempNotSafePosition.clear();
-		Board.notSafePosition.addAll(getMoves(to));
+		Board.notSafePosition.addAll(getMoves(to, null));
 //		System.out.println("----------------------");
 		return null;
 	}
@@ -176,6 +169,6 @@ public abstract class Piece {
 
 	public abstract String pieceCode();
 
-	public abstract Vector<Tile> getMoves(Tile from);
+	public abstract Vector<Tile> getMoves(Tile from, Tile to);
 
 }

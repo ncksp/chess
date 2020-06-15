@@ -23,11 +23,11 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	public Vector<Tile> getMoves(Tile from) {
+	public Vector<Tile> getMoves(Tile from, Tile to) {
 		moves = new Vector<>();
 		
-		moves.addAll(new Rook(from.getPiece().isWhite()).getMoves(from));
-		moves.addAll(new Bishop(from.getPiece().isWhite()).getMoves(from));
+		moves.addAll(new Rook(from.getPiece().isWhite()).getMoves(from, to));
+		moves.addAll(new Bishop(from.getPiece().isWhite()).getMoves(from, to));
 
 		return moves;
 	}
