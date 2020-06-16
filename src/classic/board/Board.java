@@ -3,15 +3,15 @@ package classic.board;
 import java.util.Vector;
 
 import classic.piece.King;
-import classic.piece.Pawn;
 import classic.piece.Piece;
 import classic.player.BlackPlayer;
 import classic.player.Player;
+import classic.player.PlayerMovement;
 import classic.player.WhitePlayer;
 import main.Main;
 import utilities.MainUtilities;
 
-public class Board {
+public class Board extends PlayerMovement {
 	private WhitePlayer white = new WhitePlayer();
 	private BlackPlayer black = new BlackPlayer();
 	private Vector<Movement> movesPlayer = new Vector<>();
@@ -52,7 +52,7 @@ public class Board {
 				continue;
 			} 
 			
-			if (!makeMove(movement, player)) {
+			if (!doMove(movement, player)) {
 				System.out.println("Invalid Move");
 				loop = true;
 			}
@@ -60,17 +60,15 @@ public class Board {
 
 	}
 
-	private boolean makeMove(Movement movement, Player player) {
+	private boolean doMove(Movement movement, Player player) {
 		Piece startPiece = movement.getStartPiece();
 		if(!isLegalMove(movement, player))
 			return false;
 		
 		movement.setPlayer(player);
-
-		if (movement.getStartPiece().getClass() == King.class && !isMovementSafePosition(movement, player)){
-			System.out.println("King must always in safe position");
+		
+		if(!isKingInSavePosition(movement, player))
 			return false;
-		}
 		
 		movesPlayer.add(movement);
 
@@ -101,19 +99,6 @@ public class Board {
 		return true;
 	}
 	
-	private Piece getEnPassantMove(Movement movement, Player player) {
-		if(!((Pawn) movement.getEndPiece()).isEnPassant()){
-			return null;
-		}
-		int sub = player.isWhiteSide() ? 1 : -1; 
-		int rank = movement.getTo().getRank() +sub;
-		int file = movement.getTo().getFile();
-		Piece enPassPiece = BoardUtils.board[rank][file].getPiece();
-		
-
-		BoardUtils.board[rank][file] = new Tile(null,rank , file);
-		return enPassPiece;
-	}
 
 	private boolean isLegalMove(Movement movement, Player player){
 		Piece startPiece = movement.getStartPiece();
@@ -132,27 +117,8 @@ public class Board {
 		
 		return true;
 	}
-	
-	private boolean isMovementSafePosition(Movement movement, Player player) {
-		int file = movement.toFile();
-		int rank = movement.toRank();
-		
-		Tile result = Board.notSafePosition.stream()
-				.filter(e -> e.getFile() == file && e.getRank() == rank && e.isWhite() != player.isWhiteSide())
-				.findAny()
-				.orElse(null);
-		
-		if(result != null)
-			return false;
-		
-		return true;
-	}
 
-	private boolean playerCheckPositionMove(Movement movement, Player player) {
-		if (movement.getStartPiece().getClass() != King.class) {
-			return false;
-		}
-		return true;
-	}
+
+	
 
 }
