@@ -16,4 +16,4 @@
 - [ ] checkmate
 - [ ] draw on stalemate position
 - [ ] unit tests: test coverage min. 90%
-- [ ] reduce code smells
+- [x] reduce code smells
