@@ -12,6 +12,26 @@ import main.Main;
 import utilities.MainUtilities;
 
 public class Board extends PlayerMovement {
+	public static class Move{
+		private int type;
+		private String text;
+		private static Move move;
+		private Move() {}
+		public static Move getInstance(int type, String text){
+			if(move == null)
+				move = new Move();
+			
+			move.type = type;
+			move.text = text;
+			return move;
+		}
+		public int getType() {
+			return type;
+		}
+		public String getText() {
+			return text;
+		}
+	}
 	private WhitePlayer white = new WhitePlayer();
 	private BlackPlayer black = new BlackPlayer();
 	private Vector<Movement> movesPlayer = new Vector<>();
@@ -20,33 +40,33 @@ public class Board extends PlayerMovement {
 	
 	public int setPlayerMove(int move, int type) {
 		if (move % 2 == 1)
-			checkMove(white, type, "white move: ");
+			checkMove(white, Move.getInstance(type,"white move: " ));
 		else
-			checkMove(black, type, "black move: ");
+			checkMove(black, Move.getInstance(type,"black move: " ));
 
 		return move == 2 ? 1 : move + 1;
 	}
 	
-	private void checkMove(Player player, int type, String text) {
+	private void checkMove(Player player, Move currentMove) {
 		player.definePlayerCheck();
 		if (player.isCheck()) {
 			System.out.println("You're in check, move your King");
 		}
 
-		move(text, type, player);
+		move(currentMove, player);
 	}
 
-	private void move(String text, int type, Player player) {
+	private void move(Move currentMove, Player player) {
 		Movement movement = Movement.getInstance();
 		String notation;
 		boolean loop = true;
 		do {
 			loop = false;
-			System.out.print(text);
+			System.out.print(currentMove.getText());
 
 			notation = MainUtilities.scan.nextLine();
 
-			movement = util.convertCoordinate(notation, type);
+			movement = util.convertCoordinate(notation, currentMove.getType());
 			if (movement == null) {
 				util.invalidFormatMovement();
 				continue;
@@ -95,6 +115,10 @@ public class Board extends PlayerMovement {
 			enPassPiece.setKilled(true);
 			movement.setPieceKilled(enPassPiece);
 		}
+
+		if(movement.getPromotionPiece() != 0){		
+			promotionPawn(movement);
+		}
 		
 		return true;
 	}
@@ -119,6 +143,12 @@ public class Board extends PlayerMovement {
 	}
 
 
+	private void promotionPawn(Movement movement){
+
+		BoardUtils.board[movement.toRank()][movement.toFile()] = pawnPromotion(movement);
+		
+		movement.setPromotionPiece('\0');
+	}
 	
 
 }

@@ -8,13 +8,16 @@ public class Movement {
 	private Tile from;
 	private Tile to;
 	private Piece pieceKilled;
-	private static Movement movement = new Movement();
+	private static Movement movement;
+	private char promotionPiece;
 
 	private Movement() {
 
 	}
 
 	public static Movement getInstance() {
+		if(movement == null)
+			movement = new Movement();
 		return movement;
 	}
 
@@ -49,7 +52,14 @@ public class Movement {
 	public void setPieceKilled(Piece pieceKilled) {
 		this.pieceKilled = pieceKilled;
 	}
-	
+
+	public char getPromotionPiece() {
+		return promotionPiece;
+	}
+
+	public void setPromotionPiece(char promotionPiece) {
+		this.promotionPiece = promotionPiece;
+	}
 	public Piece getStartPiece(){
 		return this.getFrom().getPiece();
 	}

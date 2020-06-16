@@ -15,7 +15,7 @@ public class BoardUtils {
 	final static int FILE = 8;
 	final static int RANK = 8;
 	final static String matcherNotation = "[A-H][1-8]";
-	
+	final static String matcherNotationPromotion = "BRQN";
 	public void invalidFormatMovement() {
 		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
 		MainUtilities.scan.nextLine();
@@ -86,12 +86,6 @@ public class BoardUtils {
 //		}
 	}
 
-	private boolean checkFetchNotation(String[] notation) {
-		if (notation.length < 2)
-			return false;
-		return true;
-	}
-
 	private int getIndexTile(char position, char indicator) {
 		int index = (position - indicator);
 		return index;
@@ -106,12 +100,50 @@ public class BoardUtils {
 		movement.setFrom(board[fromRank][fromFile]);
 		movement.setTo(board[toRank][toFile]);
 
+		if(to.length() > 2)
+			movement.setPromotionPiece(to.charAt(2));
 		return movement;
 	}
 
-	private boolean checkNotation(String notation) {
+	private boolean checkFetchNotation(String[] notation) {
+		if (notation.length < 2)
+			return false;
+		return true;
+	}
 
+	private boolean checkNotation(String notation) {
 		return Pattern.compile(matcherNotation).matcher(notation).matches();
+	}
+	
+	private boolean checkNotationToPromotion(String notation) {
+		if(notation.length() != 3)
+			return false;
+		if(!checkNotation(notation.charAt(0)+""+notation.charAt(1)))
+			return false;
+		
+		char promotion = notation.charAt(2);
+		if(!matcherNotationPromotion.contains(promotion+""))
+			return false;
+		
+		return true;
+	}
+
+	private Movement coordinateToIndex(String notation, Movement movement) {
+		String[] fetchNotation = notation.split("-");
+		if (!checkFetchNotation(fetchNotation))
+			return null;
+
+		if (!checkNotation(fetchNotation[0]))
+			return null;
+
+		if (!checkNotation(fetchNotation[1]) && !checkNotationToPromotion(fetchNotation[1]))
+			return null;
+
+		return setMovement(movement, fetchNotation[0], fetchNotation[1]);
+	}
+
+	private Movement algebraicToIndex(String notation, Movement movement) {
+		return movement;
 	}
 
 	public Movement convertCoordinate(String notation, int type) {
@@ -123,24 +155,6 @@ public class BoardUtils {
 
 		return movement;
 
-	}
-
-	private Movement coordinateToIndex(String notation, Movement movement) {
-		String[] fetchNotation = notation.split("-");
-		if (!checkFetchNotation(fetchNotation))
-			return null;
-
-		if (!checkNotation(fetchNotation[0]))
-			return null;
-
-		if (!checkNotation(fetchNotation[1]))
-			return null;
-
-		return setMovement(movement, fetchNotation[0], fetchNotation[1]);
-	}
-
-	private Movement algebraicToIndex(String notation, Movement movement) {
-		return movement;
 	}
 
 }

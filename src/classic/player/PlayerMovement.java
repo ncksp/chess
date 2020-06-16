@@ -4,9 +4,13 @@ import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Movement;
 import classic.board.Tile;
+import classic.piece.Bishop;
 import classic.piece.King;
+import classic.piece.Knight;
 import classic.piece.Pawn;
 import classic.piece.Piece;
+import classic.piece.Queen;
+import classic.piece.Rook;
 
 public class PlayerMovement {
 	protected boolean isKingInSavePosition(Movement movement, Player player) {
@@ -51,6 +55,20 @@ public class PlayerMovement {
 			return false;
 		}
 		return true;
+	}
+	protected Tile pawnPromotion(Movement movement){
+		int rank = movement.toRank();
+		int file = movement.toFile();
+		char piece = movement.getPromotionPiece();
+		boolean whiteSide = movement.getPlayer().isWhiteSide();
+		if(piece == 'B')
+			return new Tile(new Bishop(whiteSide), rank, file);
+		else if(piece == 'N')
+			return new Tile(new Knight(whiteSide), rank, file);
+		else if(piece == 'R')
+			return new Tile(new Rook(whiteSide), rank, file);
+		
+		return new Tile(new Queen(whiteSide), rank, file);
 	}
 
 }
