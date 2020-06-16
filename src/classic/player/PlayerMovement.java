@@ -37,7 +37,7 @@ public class PlayerMovement {
 	}
 
 	protected Piece getEnPassantMove(Movement movement, Player player) {
-		if(movement.getEndPiece() instanceof Pawn &&  !((Pawn) movement.getEndPiece()).isEnPassant()){
+		if(!(movement.getStartPiece() instanceof Pawn) || !(movement.getEndPiece() instanceof Pawn) ||  !((Pawn) movement.getEndPiece()).isEnPassant()){
 			return null;
 		}
 		int sub = player.isWhiteSide() ? 1 : -1; 
@@ -56,6 +56,7 @@ public class PlayerMovement {
 		}
 		return true;
 	}
+	
 	protected Tile pawnPromotion(Movement movement){
 		int rank = movement.toRank();
 		int file = movement.toFile();

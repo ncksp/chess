@@ -5,16 +5,22 @@ import java.util.Vector;
 import classic.board.Board;
 import classic.board.BoardUtils;
 import classic.board.Tile;
+import classic.player.Castling;
 import classic.player.Player;
 
 public abstract class Piece {
 	private boolean killed = false;
 	private boolean white = false;
-
+	private int everMove = 0;
 	public Piece(boolean white) {
 		this.white = white;
 	}
-
+	public void move(){
+		this.everMove++;
+	}
+	public int getEverMove(){
+		return this.everMove;
+	}
 	public boolean isWhite() {
 		return this.white;
 	}
@@ -61,7 +67,7 @@ public abstract class Piece {
 		Vector<Tile> moves = getMoves(from, to);
 		if (from.getPiece().getClass() == King.class
 				&& Math.abs(from.getFile() - to.getFile()) == 2) 
-			return isCanToCastling(player, from, to);
+			return Castling.isCanToCastling(player, from, to);
 
 		if (moves.size() < 1) 
 			return false;
@@ -81,6 +87,7 @@ public abstract class Piece {
 			if (tile.getFile() == to.getFile() && tile.getRank() == to.getRank() 
 					&& (to.getPiece() == null || to.getPiece() != null)) {
 				// System.out.println("a");
+				move();
 				return true;
 			}
 
@@ -126,44 +133,10 @@ public abstract class Piece {
 
 		tempNotSafePosition.clear();
 		Board.notSafePosition.addAll(getMoves(to, null));
-//		System.out.println("----------------------");
 		return null;
 	}
 
-	public boolean isCanToCastling(Player player, Tile from, Tile to) {
-		if (from.getRank() != 7 && from.getRank() != 0) {
-			return false;
-		}
-		if (player.isCastling()) {
-			return false;
-		}
 
-		return from.getFile() - to.getFile() > 0 ? queenCastling(player, from, to) : kingCastling(player, from, to);
-	}
-
-	private boolean kingCastling(Player player, Tile from, Tile to) {
-		for (int i = from.getFile() + 1; i < 7; i++) {
-			if (BoardUtils.board[from.getRank()][i].getPiece() != null)
-				return false;
-		}
-
-		player.setCastling(true);
-		BoardUtils.board[from.getRank()][5].setPiece(BoardUtils.board[from.getRank()][7].getPiece());
-		BoardUtils.board[from.getRank()][7].setPiece(null);
-		return true;
-	}
-
-	private boolean queenCastling(Player player, Tile from, Tile to) {
-		for (int i = from.getFile() - 1; i > 0; i--) {
-			if (BoardUtils.board[from.getRank()][i].getPiece() != null)
-				return false;
-		}
-
-		player.setCastling(true);
-		BoardUtils.board[from.getRank()][3].setPiece(BoardUtils.board[from.getRank()][0].getPiece());
-		BoardUtils.board[from.getRank()][0].setPiece(null);
-		return true;
-	}
 
 	public abstract String pieceName();
 

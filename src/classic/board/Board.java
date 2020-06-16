@@ -63,7 +63,7 @@ public class Board extends PlayerMovement {
 		do {
 			loop = false;
 			System.out.print(currentMove.getText());
-
+			System.out.println(player.isWhiteSide());
 			notation = MainUtilities.scan.nextLine();
 
 			movement = util.convertCoordinate(notation, currentMove.getType());
@@ -100,29 +100,37 @@ public class Board extends PlayerMovement {
 
 		movement.getNextMoves();
 		
+		setKilledPiece(movement);
+		
+		setEnPassantKilled(movement,player);
+		
+
+		if(movement.getPromotionPiece() != 0)		
+			promotionPawn(movement);
+		
+		return true;
+	}
+	
+
+	private void setEnPassantKilled(Movement movement, Player player) {
+		Piece enPassPiece = getEnPassantMove(movement,player);
+		if (enPassPiece != null) {
+			enPassPiece.setKilled(true);
+			movement.setPieceKilled(enPassPiece);
+		}
+	}
+
+	private void setKilledPiece(Movement movement) {
 		Piece destPiece = movement.getEndPiece();
 		if (destPiece != null) {
 			destPiece.setKilled(true);
 			movement.setPieceKilled(destPiece);
 		}
 		
-		if (destPiece != null && destPiece.getClass() == King.class) {
+		if (destPiece != null && destPiece.getClass() == King.class && destPiece.isWhite() != movement.getEndPiece().isWhite()) {
 			Main.win = destPiece.isWhite() ? 1 : 0;
 		}
-		
-		Piece enPassPiece = getEnPassantMove(movement,player);
-		if (enPassPiece != null) {
-			enPassPiece.setKilled(true);
-			movement.setPieceKilled(enPassPiece);
-		}
-
-		if(movement.getPromotionPiece() != 0){		
-			promotionPawn(movement);
-		}
-		
-		return true;
 	}
-	
 
 	private boolean isLegalMove(Movement movement, Player player){
 		Piece startPiece = movement.getStartPiece();
@@ -136,7 +144,7 @@ public class Board extends PlayerMovement {
 		if (movement.fromIsWhite() != player.isWhiteSide())
 			return false;
 
-		if (!movement.canMove()) 
+		if (!movement.canMove(player)) 
 			return false;	
 		
 		return true;

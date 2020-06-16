@@ -8,7 +8,6 @@ public class Player {
 	protected boolean isCheck;
 	protected boolean isCastling = false;
 	protected Tile king;
-
 	public boolean isWhiteSide() {
 		return this.whiteSide;
 	}
