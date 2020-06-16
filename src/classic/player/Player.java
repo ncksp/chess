@@ -1,5 +1,7 @@
 package classic.player;
 
+import java.util.Vector;
+
 import classic.board.Board;
 import classic.board.Tile;
 
@@ -45,5 +47,20 @@ public class Player {
 
 		}
 		isCheck = false;
+	}
+	
+	public boolean isPlayerCheckMate(){
+		Vector<Tile> getKingNextMoves = new Vector<>();
+		
+		getKingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
+		
+		for (Tile tile : getKingNextMoves) {
+			for (Tile notSafe : Board.notSafePosition) {
+				if (notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
+						&& tile.isWhite() != this.isWhiteSide())
+					return false;
+			}
+		}
+		return true;
 	}
 }

@@ -48,7 +48,13 @@ public class Board extends PlayerMovement {
 	}
 	
 	private void checkMove(Player player, Move currentMove) {
+		boolean checkMate = player.isPlayerCheckMate();
 		player.definePlayerCheck();
+		if(player.isCheck() && checkMate){
+			System.out.println("You're in checkmate, You Lose");
+			Main.win = player.isWhiteSide() ? 0 : 1;
+			return;
+		}
 		if (player.isCheck()) {
 			System.out.println("You're in check, move your King");
 		}
@@ -63,7 +69,6 @@ public class Board extends PlayerMovement {
 		do {
 			loop = false;
 			System.out.print(currentMove.getText());
-			System.out.println(player.isWhiteSide());
 			notation = MainUtilities.scan.nextLine();
 
 			movement = util.convertCoordinate(notation, currentMove.getType());
