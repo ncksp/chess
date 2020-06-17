@@ -33,6 +33,7 @@ public class Main {
 		boardUtils.createBoard();
 		do {
 			util.cls();
+			System.out.println("Type `exit` to exit game");
 			boardUtils.drawBoard();
 			playerMove = board.setPlayerMove(playerMove, type);
 		} while (win == -1);

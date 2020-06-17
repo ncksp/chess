@@ -76,7 +76,10 @@ public class Board extends Move {
 			loop = false;
 			System.out.print(currentMove.getText());
 			notation = MainUtilities.scan.nextLine();
-
+			if(notation.equalsIgnoreCase("exit")){
+				Main.win = -2;
+				return;
+			}
 			movement = util.convertCoordinate(notation, currentMove.getType());
 			if (movement == null) {
 				util.invalidFormatMovement();
