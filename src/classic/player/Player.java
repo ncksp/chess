@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import classic.board.Board;
 import classic.board.Tile;
+import classic.piece.King;
 
 public class Player {
 	protected boolean whiteSide;
@@ -57,13 +58,18 @@ public class Player {
 	}
 	
 	private boolean isExistSafePosition(Vector<Tile> kingNextMoves, Player player){
+		int totalKingNextMoves = kingNextMoves.size();
+		int countSafePosition = 0;
+//		System.out.println(totalKingNextMoves);
 		for (Tile tile : kingNextMoves) {
 			for (Tile notSafe : Board.notSafePosition) {
-				if (notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
+				if (tile.getPiece() instanceof King && notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
 						&& notSafe.isWhite() != this.isWhiteSide())
-					return true;
+					countSafePosition++;
 			}
 		}
+		if(countSafePosition == totalKingNextMoves)
+			return true;
 		return false;
 	}
 	
@@ -71,7 +77,9 @@ public class Player {
 		Vector<Tile> kingNextMoves = new Vector<>();
 		kingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
 		
-		return isExistSafePosition(kingNextMoves, this);
+		if(isExistSafePosition(kingNextMoves, this))
+			return false;
+		return true;
 	}
 	
 	public boolean isPlayerCheckMate(){

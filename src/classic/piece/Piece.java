@@ -33,16 +33,6 @@ public abstract class Piece extends Move {
 	public void setKilled(boolean killed) {
 		this.killed = killed;
 	}
-//
-//	public boolean isValid(Tile from, Tile to) {
-//		try {
-//			if (from.getPiece().isWhite() == to.getPiece().isWhite())
-//				return false;
-//		} catch (Exception e) {
-//		}
-//
-//		return true;
-//	}
 
 	public Piece getPiece(int rank, int file) {
 		if (rank < 0 || rank > 7 || file < 0 || file > 7)
@@ -111,7 +101,6 @@ public abstract class Piece extends Move {
 			}
 
 		}
-		System.out.println("d");
 		return false;
 	}
 

@@ -49,8 +49,7 @@ public class Board extends Move {
 	}
 	
 	public void playerMove(Player player, PlayerMove currentMove) {
-		if(isStalematePosition(player))
-			return;
+		
 			
 		boolean checkMate = player.isPlayerCheckMate();
 		player.definePlayerCheck();
@@ -64,6 +63,9 @@ public class Board extends Move {
 		}
 
 		movePrompt(currentMove, player);
+		
+		if(isStalematePosition(player))
+			return;
 	}
 	
 	private void movePrompt(PlayerMove currentMove, Player player) {
@@ -150,18 +152,15 @@ public class Board extends Move {
 	}
 
 	private boolean isStalematePosition(Player player){
-		if(!player.isStalematePosition()){
+		if(!player.isStalematePosition())
 			return false;
-		}
-		Player opponent = player instanceof WhitePlayer ? white : black;
-		if(!opponent.isStalematePosition()){				
+		
+		Player opponent = player instanceof WhitePlayer ? black : white;
+		if(!opponent.isStalematePosition())				
 			return false;
-		}
+		
 		System.out.println("Stalemate position, Draw");
 		Main.win = 2;
 		return true;
-		
 	}
-	
-
 }
