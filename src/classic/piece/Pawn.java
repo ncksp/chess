@@ -114,8 +114,6 @@ public class Pawn extends Piece {
 			// TODO: handle exception
 		}
 		
-		
-			
 	}
 
 }

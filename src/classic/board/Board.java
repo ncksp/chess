@@ -11,15 +11,15 @@ import classic.player.WhitePlayer;
 import main.Main;
 import utilities.MainUtilities;
 
-public class Board extends PlayerMovement {
-	public static class Move{
+public class Board extends Move {
+	public static class PlayerMove{
 		private int type;
 		private String text;
-		private static Move move;
-		private Move() {}
-		public static Move getInstance(int type, String text){
+		private static PlayerMove move;
+		private PlayerMove() {}
+		public static PlayerMove getInstance(int type, String text){
 			if(move == null)
-				move = new Move();
+				move = new PlayerMove();
 			
 			move.type = type;
 			move.text = text;
@@ -36,18 +36,22 @@ public class Board extends PlayerMovement {
 	private BlackPlayer black = new BlackPlayer();
 	private Vector<Movement> movesPlayer = new Vector<>();
 	private BoardUtils util = new BoardUtils();
+	private PlayerMovement playerMovement = new PlayerMovement();
 	public static Vector<Tile> notSafePosition = new Vector<>();
 	
 	public int setPlayerMove(int move, int type) {
 		if (move % 2 == 1)
-			checkMove(white, Move.getInstance(type,"white move: " ));
+			playerMove(white, PlayerMove.getInstance(type,"white move: " ));
 		else
-			checkMove(black, Move.getInstance(type,"black move: " ));
+			playerMove(black, PlayerMove.getInstance(type,"black move: " ));
 
 		return move == 2 ? 1 : move + 1;
 	}
 	
-	private void checkMove(Player player, Move currentMove) {
+	public void playerMove(Player player, PlayerMove currentMove) {
+		if(isStalematePosition(player))
+			return;
+			
 		boolean checkMate = player.isPlayerCheckMate();
 		player.definePlayerCheck();
 		if(player.isCheck() && checkMate){
@@ -59,10 +63,10 @@ public class Board extends PlayerMovement {
 			System.out.println("You're in check, move your King");
 		}
 
-		move(currentMove, player);
+		movePrompt(currentMove, player);
 	}
-
-	private void move(Move currentMove, Player player) {
+	
+	private void movePrompt(PlayerMove currentMove, Player player) {
 		Movement movement = Movement.getInstance();
 		String notation;
 		boolean loop = true;
@@ -77,7 +81,7 @@ public class Board extends PlayerMovement {
 				continue;
 			} 
 			
-			if (!doMove(movement, player)) {
+			if (!movingTile(movement, player)) {
 				System.out.println("Invalid Move");
 				loop = true;
 			}
@@ -85,40 +89,8 @@ public class Board extends PlayerMovement {
 
 	}
 
-	private boolean doMove(Movement movement, Player player) {
-		Piece startPiece = movement.getStartPiece();
-		if(!isLegalMove(movement, player))
-			return false;
-		
-		movement.setPlayer(player);
-		
-		if(!isKingInSavePosition(movement, player))
-			return false;
-		
-		movesPlayer.add(movement);
-
-		if (movement.getStartPiece().getClass() == King.class)
-			player.setKing(movement.getTo());
-
-		movement.getTo().setPiece(startPiece);
-		movement.getFrom().setPiece(null);
-
-		movement.getNextMoves();
-		
-		setKilledPiece(movement);
-		
-		setEnPassantKilled(movement,player);
-		
-
-		if(movement.getPromotionPiece() != 0)		
-			promotionPawn(movement);
-		
-		return true;
-	}
-	
-
 	private void setEnPassantKilled(Movement movement, Player player) {
-		Piece enPassPiece = getEnPassantMove(movement,player);
+		Piece enPassPiece = playerMovement.getEnPassantMove(movement,player);
 		if (enPassPiece != null) {
 			enPassPiece.setKilled(true);
 			movement.setPieceKilled(enPassPiece);
@@ -137,30 +109,58 @@ public class Board extends PlayerMovement {
 		}
 	}
 
-	private boolean isLegalMove(Movement movement, Player player){
+	private boolean movingTile(Movement movement, Player player) {
 		Piece startPiece = movement.getStartPiece();
-
-		if (player.isCheck() && !playerCheckPositionMove(movement, player))
+		if (player.isCheck() && !playerMovement.playerCheckPositionMove(movement, player))
+			return false;	
+		
+		if(!isLegalMove(movement, player))
 			return false;
 		
-		if (startPiece == null)
+		movement.setPlayer(player);
+		
+		if(!playerMovement.isKingInSavePosition(movement, player))
 			return false;
+		
+		movesPlayer.add(movement);
 
-		if (movement.fromIsWhite() != player.isWhiteSide())
-			return false;
+		if (movement.getStartPiece().getClass() == King.class)
+			player.setKing(movement.getTo());
 
-		if (!movement.canMove(player)) 
-			return false;	
+		movement.getTo().setPiece(startPiece);
+		movement.getFrom().setPiece(null);
+
+		movement.getNextMoves();
+		
+		setKilledPiece(movement);
+		
+		setEnPassantKilled(movement,player);
+		
+		if(movement.getPromotionPiece() != 0)		
+			promotionPawn(movement);
 		
 		return true;
 	}
 
-
 	private void promotionPawn(Movement movement){
 
-		BoardUtils.board[movement.toRank()][movement.toFile()] = pawnPromotion(movement);
+		BoardUtils.board[movement.toRank()][movement.toFile()] = playerMovement.pawnPromotion(movement);
 		
 		movement.setPromotionPiece('\0');
+	}
+
+	private boolean isStalematePosition(Player player){
+		if(!player.isStalematePosition()){
+			return false;
+		}
+		Player opponent = player instanceof WhitePlayer ? white : black;
+		if(!opponent.isStalematePosition()){				
+			return false;
+		}
+		System.out.println("Stalemate position, Draw");
+		Main.win = 2;
+		return true;
+		
 	}
 	
 

@@ -16,6 +16,7 @@ public class BoardUtils {
 	final static int RANK = 8;
 	final static String matcherNotation = "[A-H][1-8]";
 	final static String matcherNotationPromotion = "BRQN";
+	
 	public void invalidFormatMovement() {
 		System.out.println("invalid move: expected format [A..H][1..8]-[A..H][1..8]");
 		MainUtilities.scan.nextLine();

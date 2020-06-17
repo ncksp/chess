@@ -30,8 +30,10 @@ public class MainUtilities {
 		// TODO Auto-generated method stub
 		if(win == 0){
 			System.out.println("Black win");
-		}else{			
+		}else if (win == 1){			
 			System.out.println("White win");
+		}else{
+			System.out.println("DRAW!");
 		}
 		
 		return;

@@ -4,11 +4,12 @@ import java.util.Vector;
 
 import classic.board.Board;
 import classic.board.BoardUtils;
+import classic.board.Move;
 import classic.board.Tile;
 import classic.player.Castling;
 import classic.player.Player;
 
-public abstract class Piece {
+public abstract class Piece extends Move {
 	private boolean killed = false;
 	private boolean white = false;
 	private int everMove = 0;
@@ -32,28 +33,22 @@ public abstract class Piece {
 	public void setKilled(boolean killed) {
 		this.killed = killed;
 	}
-
-	public boolean isValid(Tile from, Tile to) {
-		try {
-			if (from.getPiece().isWhite() == to.getPiece().isWhite())
-				return false;
-		} catch (Exception e) {
-		}
-
-		return true;
-	}
+//
+//	public boolean isValid(Tile from, Tile to) {
+//		try {
+//			if (from.getPiece().isWhite() == to.getPiece().isWhite())
+//				return false;
+//		} catch (Exception e) {
+//		}
+//
+//		return true;
+//	}
 
 	public Piece getPiece(int rank, int file) {
 		if (rank < 0 || rank > 7 || file < 0 || file > 7)
 			return null;
 
 		return BoardUtils.board[rank][file].getPiece();
-	}
-
-	public boolean valid(int rank, int file) {
-		if (rank < 0 || rank > 7 || file < 0 || file > 7)
-			return false;
-		return true;
 	}
 
 	public Tile setMovement(int rank, int file, Tile from) {
@@ -106,7 +101,7 @@ public abstract class Piece {
 
 			if ((tile.getFile() != to.getFile() || tile.getRank() != to.getRank())
 					&& tile.getPiece().isWhite() == to.getPiece().isWhite()) {
-				// System.out.println("c");
+				 System.out.println("c");
 				return false;
 
 			} else if (tile.getFile() == to.getFile() && tile.getRank() == to.getRank()
@@ -116,6 +111,7 @@ public abstract class Piece {
 			}
 
 		}
+		System.out.println("d");
 		return false;
 	}
 

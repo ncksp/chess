@@ -7,60 +7,81 @@ import classic.board.Tile;
 
 public class Player {
 	protected boolean whiteSide;
-	protected boolean isCheck;
-	protected boolean isCastling = false;
+	private boolean check;
+	private boolean castling = false;
+	private boolean stalemate = false;
 	protected Tile king;
 	public boolean isWhiteSide() {
 		return this.whiteSide;
 	}
-
+	
 	public Tile getKing() {
 		return king;
 	}
-
+	public void staleMate(){
+		this.stalemate = true;
+	}
+	
+	public boolean isStalemate(){
+		return this.stalemate;
+	}
 	public void setKing(Tile king) {
 		this.king = king;
 	}
 
 	public boolean isCheck() {
-		return isCheck;
+		return check;
 	}
 
 	public void setCheck(boolean isCheck) {
-		this.isCheck = isCheck;
+		this.check = isCheck;
 	}
 
 	public boolean isCastling() {
-		return isCastling;
+		return castling;
 	}
 
 	public void setCastling(boolean isCastling) {
-		this.isCastling = isCastling;
+		this.castling = isCastling;
 	}
 	
 	public void definePlayerCheck() {
 		for (Tile tile : Board.notSafePosition) {
 			if (tile.getFile() == this.getKing().getFile() && tile.getRank() == this.getKing().getRank()
 					&& tile.isWhite() != this.isWhiteSide())
-				isCheck=true;
+				check=true;
 			break;
 
 		}
-		isCheck = false;
+		check = false;
+	}
+	
+	private boolean isExistSafePosition(Vector<Tile> kingNextMoves, Player player){
+		for (Tile tile : kingNextMoves) {
+			for (Tile notSafe : Board.notSafePosition) {
+				if (notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
+						&& notSafe.isWhite() != this.isWhiteSide())
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean isStalematePosition(){
+		Vector<Tile> kingNextMoves = new Vector<>();
+		kingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
+		
+		return isExistSafePosition(kingNextMoves, this);
 	}
 	
 	public boolean isPlayerCheckMate(){
-		Vector<Tile> getKingNextMoves = new Vector<>();
+		Vector<Tile> kingNextMoves = new Vector<>();
 		
-		getKingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
+		kingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
 		
-		for (Tile tile : getKingNextMoves) {
-			for (Tile notSafe : Board.notSafePosition) {
-				if (notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
-						&& tile.isWhite() != this.isWhiteSide())
-					return false;
-			}
-		}
-		return true;
+		if(!isExistSafePosition(kingNextMoves, this)) return true;
+		
+		return false;
+		
 	}
 }
