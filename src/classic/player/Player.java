@@ -4,7 +4,6 @@ import java.util.Vector;
 
 import classic.board.Board;
 import classic.board.Tile;
-import classic.piece.King;
 
 public class Player {
 	protected boolean whiteSide;
@@ -58,24 +57,25 @@ public class Player {
 	}
 	
 	private boolean isExistSafePosition(Vector<Tile> kingNextMoves, Player player){
-		int totalKingNextMoves = kingNextMoves.size();
+		int totalKingNextMoves = 0;
 		int countSafePosition = 0;
-//		System.out.println(totalKingNextMoves);
 		for (Tile tile : kingNextMoves) {
 			for (Tile notSafe : Board.notSafePosition) {
-				if (tile.getPiece() instanceof King && notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
-						&& notSafe.isWhite() != this.isWhiteSide())
+				if (notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
+						&& notSafe.isWhite() == this.isWhiteSide())
 					countSafePosition++;
 			}
+			totalKingNextMoves++;
 		}
-		if(countSafePosition == totalKingNextMoves)
+		if(countSafePosition <= totalKingNextMoves)
 			return true;
 		return false;
 	}
 	
 	public boolean isStalematePosition(){
+		System.out.println(this.getKing().getRank() + "-File:" +this.getKing().getFile());
 		Vector<Tile> kingNextMoves = new Vector<>();
-		kingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
+		kingNextMoves = this.getKing().getPiece().getMoves(this.getKing(), null);
 		
 		if(isExistSafePosition(kingNextMoves, this))
 			return false;
@@ -85,7 +85,7 @@ public class Player {
 	public boolean isPlayerCheckMate(){
 		Vector<Tile> kingNextMoves = new Vector<>();
 		
-		kingNextMoves = this.king.getPiece().getMoves(this.getKing(), null);
+		kingNextMoves = this.getKing().getPiece().getMoves(this.getKing(), null);
 		
 		if(!isExistSafePosition(kingNextMoves, this)) return true;
 		

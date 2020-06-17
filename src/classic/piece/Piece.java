@@ -58,45 +58,26 @@ public abstract class Piece extends Move {
 			return false;
 
 		for (Tile tile : moves) {
-			// try {
-			// System.out.println(tile.getFile() + "-" + tile.getRank() + "{" +
-			// to.getFile() + "-" + to.getRank() + "}"
-			// + tile.getPiece().isWhite() + "-" + to.getPiece().isWhite());
-			//
-			// } catch (Exception e) {
-			// System.out.println(
-			// tile.getFile() + "-" + tile.getRank() + "{" + to.getFile() + "-"
-			// + to.getRank() + "} null");
-			// }
-			// kalo piece kosong dan data sama
 			if (tile.getFile() == to.getFile() && tile.getRank() == to.getRank() 
 					&& (to.getPiece() == null || to.getPiece() != null)) {
-				// System.out.println("a");
 				move();
 				return true;
 			}
 
-			// kalo piece gak kosong, lalu yang di cari beda warna sama yang
-			// ada,
-			// dan kalo file dan rank salah satu beda
 			if (tile.getPiece() != null && tile.getPiece().isWhite() != from.getPiece().isWhite()
 					&& (tile.getFile() != to.getFile() || tile.getRank() != to.getRank())) {
-				// System.out.println("b");
 				continue;
 			}
 
-			// kalo salah satu nya kosong
 			if (tile.getPiece() == null || to.getPiece() == null)
 				continue;
 
 			if ((tile.getFile() != to.getFile() || tile.getRank() != to.getRank())
 					&& tile.getPiece().isWhite() == to.getPiece().isWhite()) {
-				 System.out.println("c");
 				return false;
 
 			} else if (tile.getFile() == to.getFile() && tile.getRank() == to.getRank()
 					&& tile.getPiece().isWhite() == to.getPiece().isWhite()) {
-				// System.out.println("d");
 				return true;
 			}
 

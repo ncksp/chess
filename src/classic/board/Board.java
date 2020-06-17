@@ -50,7 +50,7 @@ public class Board extends Move {
 	
 	public void playerMove(Player player, PlayerMove currentMove) {
 		
-			
+
 		boolean checkMate = player.isPlayerCheckMate();
 		player.definePlayerCheck();
 		if(player.isCheck() && checkMate){
@@ -63,9 +63,11 @@ public class Board extends Move {
 		}
 
 		movePrompt(currentMove, player);
-		
-		if(isStalematePosition(player))
+		if(isStalematePosition(player)){
+			System.out.println();
 			return;
+		}
+		
 	}
 	
 	private void movePrompt(PlayerMove currentMove, Player player) {
