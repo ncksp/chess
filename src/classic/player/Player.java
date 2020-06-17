@@ -62,7 +62,7 @@ public class Player {
 		for (Tile tile : kingNextMoves) {
 			for (Tile notSafe : Board.notSafePosition) {
 				if (notSafe.getFile() != tile.getFile() && notSafe.getRank() != tile.getRank() 
-						&& notSafe.isWhite() == this.isWhiteSide())
+						&& notSafe.isWhite() != this.isWhiteSide())
 					countSafePosition++;
 			}
 			totalKingNextMoves++;
