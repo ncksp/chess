@@ -14,7 +14,7 @@
 - [x] en passant
 - [x] pawn promotion
 - [x] checkmate
-- [x] draw on stalemate position
+- [x] draw on stalemate position (salah konsep stalemate :D)
 - [ ] unit tests: test coverage min. 90% 
 - [x] reduce code smells (masih banyak smell)
 
